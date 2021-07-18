@@ -8,9 +8,11 @@
 #include <fmt/format.h>
 #include <string>
 #include <vector>
+#include "compiler.hpp"
 
 constexpr std::array long_opts{
-    option{.name = "file", .has_arg = false, .val = 'f'},
+    option{.name = "file", .has_arg = true, .val = 'f'},
+    option{.name = "help", .has_arg = false, .val = 'h'},
     option{.name = nullptr, .has_arg = false, .val = -1},
 };
 

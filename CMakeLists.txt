@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.18)
 
 if (WIN32)
     add_subdirectory(deps/wingetopt)
@@ -6,7 +6,7 @@ endif ()
 
 project(cparser)
 
-add_executable(cparser main.cpp)
+add_executable(cparser main.cpp compiler.cpp)
 target_compile_features(cparser PRIVATE cxx_std_20)
 
 find_package(fmt REQUIRED)
