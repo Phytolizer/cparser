@@ -1,4 +1,6 @@
+#include "compiler.h"
 #include "compiler.hpp"
+#include <stdexcept>
 
 extern "C"
 {
@@ -8,9 +10,6 @@ extern "C"
     typedef void *phase3scan_t;
     extern void phase3_scan_bytes(const char *, size_t, phase3scan_t);
     extern void phase3lex_init(phase3scan_t *);
-
-    // defined in this file
-    extern void include_file(const char *);
 }
 
 #include <fmt/format.h>
@@ -32,6 +31,10 @@ static RawSource readSource(std::string_view fileName)
 {
     std::string source;
     FILE *fp = std::fopen(std::string{fileName.begin(), fileName.end()}.c_str(), "r");
+    if (!fp)
+    {
+        throw std::runtime_error{fmt::format("couldn't find {}", fileName)};
+    }
     phase2set_in(fp);
     char c;
     std::size_t col = 1;
@@ -74,7 +77,36 @@ static TokenizedSource tokenize(RawSource source)
     };
 }
 
-void include_file(const char *filename)
+void include_file(const token_list *tokens)
 {
-    fmt::print("including {}\n", filename);
+    if (tokens->next != nullptr)
+    {
+        throw std::runtime_error{"too many tokens in #include statement\n"};
+    }
+    if (tokens->token->type != PP_HEADER_NAME)
+    {
+        throw std::runtime_error{"expected header name\n"};
+    }
+    compile(std::string_view{tokens->token->text + 1, tokens->token->text + strlen(tokens->token->text) - 1});
+}
+
+void define_simple_macro(const token *name, token_list *replacement)
+{
+}
+
+void define_function_like_macro(const token *name, identifier_list *parameters, token_list *replacement)
+{
+}
+
+void define_function_like_variadic_macro(const token *name, token_list *replacement)
+{
+}
+
+void define_function_like_variadic_macro_with_args(const token *name, identifier_list *parameters,
+                                                   token_list *replacement)
+{
+}
+
+void undefine_macro(const token *name)
+{
 }

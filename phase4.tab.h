@@ -48,7 +48,7 @@
 extern int phase4debug;
 #endif
 /* "%code requires" blocks.  */
-#line 104 "phase4.y"
+#line 109 "phase4.y"
 
 typedef void *yyscan_t;
 
@@ -145,9 +145,11 @@ union PHASE4STYPE
 {
 #line 84 "phase4.y"
 
-    char *str;
+    struct token *token;
+    struct token_list *token_list;
+    struct identifier_list *identifier_list;
 
-#line 151 "phase4.tab.h"
+#line 153 "phase4.tab.h"
 
 };
 typedef union PHASE4STYPE PHASE4STYPE;
@@ -173,12 +175,12 @@ struct PHASE4LTYPE
 
 int phase4parse (yyscan_t scanner);
 /* "%code provides" blocks.  */
-#line 108 "phase4.y"
+#line 113 "phase4.y"
 
 #define YY_DECL \
     int phase3lex(PHASE4STYPE *yylval_param, PHASE4LTYPE *yylloc_param, yyscan_t yyscanner)
 YY_DECL;
 
-#line 183 "phase4.tab.h"
+#line 185 "phase4.tab.h"
 
 #endif /* !YY_PHASE4_PHASE4_TAB_H_INCLUDED  */
