@@ -6,7 +6,7 @@ endif ()
 
 project(cparser)
 
-add_executable(cparser main.cpp compiler.cpp)
+add_executable(cparser main.cpp compiler.cpp phase2.yy.c phase3.yy.c phase4.tab.c)
 target_compile_features(cparser PRIVATE cxx_std_20)
 
 find_package(fmt REQUIRED)

@@ -1,6 +1,11 @@
 #ifndef CPARSER_COMPILER_HPP
 #define CPARSER_COMPILER_HPP
 
+extern "C"
+{
+#include "phase4.tab.h"
+}
+
 #include <string>
 #include <string_view>
 #include <vector>
@@ -15,8 +20,19 @@ struct TextSpan
 
 struct RawSource
 {
-    std::vector<std::string> sourceLines;
+    std::string source;
     TextSpan span;
+};
+
+struct Token
+{
+    phase4tokentype type;
+    TextSpan span;
+};
+
+struct TokenizedSource
+{
+    std::vector<Token> tokens;
 };
 
 void compile(std::string_view fileName);
