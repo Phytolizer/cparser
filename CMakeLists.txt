@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.18)
 if (WIN32)
     add_subdirectory(deps/wingetopt)
 endif ()
+add_subdirectory(packcc)
 
 project(cparser)
 

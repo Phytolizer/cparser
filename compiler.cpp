@@ -21,6 +21,11 @@ extern "C"
 static RawSource readSource(std::string_view fileName);
 static TokenizedSource tokenize(RawSource source);
 
+constexpr static std::array includePath{
+    "",
+    "/usr/include",
+};
+
 void compile(std::string_view fileName)
 {
     RawSource source = readSource(fileName);
@@ -30,7 +35,7 @@ void compile(std::string_view fileName)
 static RawSource readSource(std::string_view fileName)
 {
     std::string source;
-    FILE *fp = std::fopen(std::string{fileName.begin(), fileName.end()}.c_str(), "r");
+    FILE *fp = std::fopen(fmt::format("{}", fileName).c_str(), "r");
     if (!fp)
     {
         throw std::runtime_error{fmt::format("couldn't find {}", fileName)};

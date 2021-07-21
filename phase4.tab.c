@@ -2875,52 +2875,58 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
 #line 2876 "phase4.tab.c"
     break;
 
+  case 16: /* if_group: "#" "if" constant_expression EOL group_opt  */
+#line 196 "phase4.y"
+                                                     { printf("end if group (line %d)\n"); }
+#line 2882 "phase4.tab.c"
+    break;
+
   case 24: /* control_line: "#" "include" pp_tokens EOL  */
 #line 204 "phase4.y"
                                           { include_file((YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval.token_list)); }
-#line 2882 "phase4.tab.c"
+#line 2888 "phase4.tab.c"
     break;
 
   case 25: /* control_line: "#" "define" identifier replacement_list EOL  */
 #line 205 "phase4.y"
                                                    { define_simple_macro((YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval.token), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval.token_list)); }
-#line 2888 "phase4.tab.c"
+#line 2894 "phase4.tab.c"
     break;
 
   case 26: /* control_line: "#" "define" identifier "=(" identifier_list_opt ")" replacement_list EOL  */
 #line 206 "phase4.y"
                                                                                 { define_function_like_macro((YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yysval.token), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yysval.identifier_list), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval.token_list)); }
-#line 2894 "phase4.tab.c"
+#line 2900 "phase4.tab.c"
     break;
 
   case 27: /* control_line: "#" "define" identifier "=(" "..." ")" replacement_list EOL  */
 #line 207 "phase4.y"
                                                                   { define_function_like_variadic_macro((YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yysval.token), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval.token_list)); }
-#line 2900 "phase4.tab.c"
+#line 2906 "phase4.tab.c"
     break;
 
   case 28: /* control_line: "#" "define" identifier "=(" identifier_list "," "..." ")" replacement_list EOL  */
 #line 208 "phase4.y"
                                                                                       { define_function_like_variadic_macro_with_args((YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-7)].yystate.yysemantics.yysval.token), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yysval.identifier_list), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval.token_list)); }
-#line 2906 "phase4.tab.c"
+#line 2912 "phase4.tab.c"
     break;
 
   case 29: /* control_line: "#" "undef" identifier EOL  */
 #line 209 "phase4.y"
                                  { undefine_macro((YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval.token)); }
-#line 2912 "phase4.tab.c"
+#line 2918 "phase4.tab.c"
     break;
 
   case 38: /* pp_tokens_opt: pp_tokens  */
 #line 218 "phase4.y"
                          { ((*yyvalp).token_list) = (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval.token_list); }
-#line 2918 "phase4.tab.c"
+#line 2924 "phase4.tab.c"
     break;
 
   case 39: /* pp_tokens_opt: %empty  */
 #line 219 "phase4.y"
       { ((*yyvalp).token_list) = NULL; }
-#line 2924 "phase4.tab.c"
+#line 2930 "phase4.tab.c"
     break;
 
   case 40: /* pp_tokens: preprocessing_token  */
@@ -2930,7 +2936,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
         ((*yyvalp).token_list)->token = (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval.token);
         ((*yyvalp).token_list)->next = NULL;
     }
-#line 2934 "phase4.tab.c"
+#line 2940 "phase4.tab.c"
     break;
 
   case 41: /* pp_tokens: pp_tokens preprocessing_token  */
@@ -2940,19 +2946,19 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
         ((*yyvalp).token_list)->token = (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval.token);
         ((*yyvalp).token_list)->next = (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval.token_list);
     }
-#line 2944 "phase4.tab.c"
+#line 2950 "phase4.tab.c"
     break;
 
   case 42: /* identifier_list_opt: identifier_list  */
 #line 232 "phase4.y"
                                      { ((*yyvalp).identifier_list) = (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval.identifier_list); }
-#line 2950 "phase4.tab.c"
+#line 2956 "phase4.tab.c"
     break;
 
   case 43: /* identifier_list_opt: %empty  */
 #line 233 "phase4.y"
       { ((*yyvalp).identifier_list) = NULL; }
-#line 2956 "phase4.tab.c"
+#line 2962 "phase4.tab.c"
     break;
 
   case 44: /* identifier_list: identifier comma identifier_list  */
@@ -2962,7 +2968,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
         ((*yyvalp).identifier_list)->text = mycopystr(scanner);
         ((*yyvalp).identifier_list)->next = (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval.identifier_list);
     }
-#line 2966 "phase4.tab.c"
+#line 2972 "phase4.tab.c"
     break;
 
   case 45: /* identifier_list: identifier  */
@@ -2972,7 +2978,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
         ((*yyvalp).identifier_list)->text = mycopystr(scanner);
         ((*yyvalp).identifier_list)->next = NULL;
     }
-#line 2976 "phase4.tab.c"
+#line 2982 "phase4.tab.c"
     break;
 
   case 418: /* identifier: IDENTIFIER  */
@@ -2982,7 +2988,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_IDENTIFIER; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 2986 "phase4.tab.c"
+#line 2992 "phase4.tab.c"
     break;
 
   case 419: /* header_name: HEADER_NAME  */
@@ -2992,7 +2998,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_HEADER_NAME; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 2996 "phase4.tab.c"
+#line 3002 "phase4.tab.c"
     break;
 
   case 420: /* integral_constant: INTEGRAL_CONSTANT  */
@@ -3002,7 +3008,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_INTEGRAL_CONSTANT; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3006 "phase4.tab.c"
+#line 3012 "phase4.tab.c"
     break;
 
   case 421: /* floating_constant: FLOATING_CONSTANT  */
@@ -3012,7 +3018,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_FLOATING_CONSTANT; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3016 "phase4.tab.c"
+#line 3022 "phase4.tab.c"
     break;
 
   case 422: /* character_constant: CHARACTER_CONSTANT  */
@@ -3022,7 +3028,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_CHARACTER_CONSTANT; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3026 "phase4.tab.c"
+#line 3032 "phase4.tab.c"
     break;
 
   case 423: /* string_literal: STRING_LITERAL  */
@@ -3032,7 +3038,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_STRING_LITERAL; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3036 "phase4.tab.c"
+#line 3042 "phase4.tab.c"
     break;
 
   case 424: /* lbrack: "["  */
@@ -3042,7 +3048,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_LBRACK; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3046 "phase4.tab.c"
+#line 3052 "phase4.tab.c"
     break;
 
   case 425: /* rbrack: "]"  */
@@ -3052,7 +3058,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_RBRACK; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3056 "phase4.tab.c"
+#line 3062 "phase4.tab.c"
     break;
 
   case 426: /* connected_lparen: "=("  */
@@ -3062,7 +3068,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_CONNECTED_LPAREN; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3066 "phase4.tab.c"
+#line 3072 "phase4.tab.c"
     break;
 
   case 427: /* lparen: "("  */
@@ -3072,7 +3078,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_LPAREN; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3076 "phase4.tab.c"
+#line 3082 "phase4.tab.c"
     break;
 
   case 428: /* rparen: ")"  */
@@ -3082,7 +3088,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_RPAREN; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3086 "phase4.tab.c"
+#line 3092 "phase4.tab.c"
     break;
 
   case 429: /* lbrace: "{"  */
@@ -3092,7 +3098,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_LBRACE; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3096 "phase4.tab.c"
+#line 3102 "phase4.tab.c"
     break;
 
   case 430: /* rbrace: "}"  */
@@ -3102,7 +3108,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_RBRACE; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3106 "phase4.tab.c"
+#line 3112 "phase4.tab.c"
     break;
 
   case 431: /* dot: "."  */
@@ -3112,7 +3118,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_DOT; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3116 "phase4.tab.c"
+#line 3122 "phase4.tab.c"
     break;
 
   case 432: /* arrow: "->"  */
@@ -3122,7 +3128,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_ARROW; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3126 "phase4.tab.c"
+#line 3132 "phase4.tab.c"
     break;
 
   case 433: /* plusplus: "++"  */
@@ -3132,7 +3138,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_PLUSPLUS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3136 "phase4.tab.c"
+#line 3142 "phase4.tab.c"
     break;
 
   case 434: /* minusminus: "--"  */
@@ -3142,7 +3148,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_MINUSMINUS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3146 "phase4.tab.c"
+#line 3152 "phase4.tab.c"
     break;
 
   case 435: /* amp: "&"  */
@@ -3152,7 +3158,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_AMP; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3156 "phase4.tab.c"
+#line 3162 "phase4.tab.c"
     break;
 
   case 436: /* star: "*"  */
@@ -3162,7 +3168,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_STAR; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3166 "phase4.tab.c"
+#line 3172 "phase4.tab.c"
     break;
 
   case 437: /* plus: "+"  */
@@ -3172,7 +3178,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_PLUS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3176 "phase4.tab.c"
+#line 3182 "phase4.tab.c"
     break;
 
   case 438: /* minus: "-"  */
@@ -3182,7 +3188,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_MINUS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3186 "phase4.tab.c"
+#line 3192 "phase4.tab.c"
     break;
 
   case 439: /* tilde: "~"  */
@@ -3192,7 +3198,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_TILDE; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3196 "phase4.tab.c"
+#line 3202 "phase4.tab.c"
     break;
 
   case 440: /* bang: "!"  */
@@ -3202,7 +3208,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_BANG; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3206 "phase4.tab.c"
+#line 3212 "phase4.tab.c"
     break;
 
   case 441: /* slash: "/"  */
@@ -3212,7 +3218,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_SLASH; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3216 "phase4.tab.c"
+#line 3222 "phase4.tab.c"
     break;
 
   case 442: /* percent: "%"  */
@@ -3222,7 +3228,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_PERCENT; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3226 "phase4.tab.c"
+#line 3232 "phase4.tab.c"
     break;
 
   case 443: /* leftleft: "<<"  */
@@ -3232,7 +3238,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_LEFTLEFT; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3236 "phase4.tab.c"
+#line 3242 "phase4.tab.c"
     break;
 
   case 444: /* rightright: ">>"  */
@@ -3242,7 +3248,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_RIGHTRIGHT; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3246 "phase4.tab.c"
+#line 3252 "phase4.tab.c"
     break;
 
   case 445: /* left: "<"  */
@@ -3252,7 +3258,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_LEFT; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3256 "phase4.tab.c"
+#line 3262 "phase4.tab.c"
     break;
 
   case 446: /* right: ">"  */
@@ -3262,7 +3268,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_RIGHT; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3266 "phase4.tab.c"
+#line 3272 "phase4.tab.c"
     break;
 
   case 447: /* leftequals: "<="  */
@@ -3272,7 +3278,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_LEFTEQUALS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3276 "phase4.tab.c"
+#line 3282 "phase4.tab.c"
     break;
 
   case 448: /* rightequals: ">="  */
@@ -3282,7 +3288,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_RIGHTEQUALS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3286 "phase4.tab.c"
+#line 3292 "phase4.tab.c"
     break;
 
   case 449: /* equalsequals: "=="  */
@@ -3292,7 +3298,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_EQUALSEQUALS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3296 "phase4.tab.c"
+#line 3302 "phase4.tab.c"
     break;
 
   case 450: /* bangequals: "!="  */
@@ -3302,7 +3308,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_BANGEQUALS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3306 "phase4.tab.c"
+#line 3312 "phase4.tab.c"
     break;
 
   case 451: /* carat: "^"  */
@@ -3312,7 +3318,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_CARAT; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3316 "phase4.tab.c"
+#line 3322 "phase4.tab.c"
     break;
 
   case 452: /* pipe: "|"  */
@@ -3322,7 +3328,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_PIPE; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3326 "phase4.tab.c"
+#line 3332 "phase4.tab.c"
     break;
 
   case 453: /* ampamp: "&&"  */
@@ -3332,7 +3338,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_AMPAMP; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3336 "phase4.tab.c"
+#line 3342 "phase4.tab.c"
     break;
 
   case 454: /* pipepipe: "||"  */
@@ -3342,7 +3348,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_PIPEPIPE; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3346 "phase4.tab.c"
+#line 3352 "phase4.tab.c"
     break;
 
   case 455: /* question: "?"  */
@@ -3352,7 +3358,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_QUESTION; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3356 "phase4.tab.c"
+#line 3362 "phase4.tab.c"
     break;
 
   case 456: /* colon: ":"  */
@@ -3362,7 +3368,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_COLON; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3366 "phase4.tab.c"
+#line 3372 "phase4.tab.c"
     break;
 
   case 457: /* semicolon: ";"  */
@@ -3372,7 +3378,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_SEMICOLON; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3376 "phase4.tab.c"
+#line 3382 "phase4.tab.c"
     break;
 
   case 458: /* ellipsis: "..."  */
@@ -3382,7 +3388,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_ELLIPSIS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3386 "phase4.tab.c"
+#line 3392 "phase4.tab.c"
     break;
 
   case 459: /* equals: "="  */
@@ -3392,7 +3398,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_EQUALS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3396 "phase4.tab.c"
+#line 3402 "phase4.tab.c"
     break;
 
   case 460: /* starequals: "*="  */
@@ -3402,7 +3408,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_STAREQUALS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3406 "phase4.tab.c"
+#line 3412 "phase4.tab.c"
     break;
 
   case 461: /* slashequals: "/="  */
@@ -3412,7 +3418,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_SLASHEQUALS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3416 "phase4.tab.c"
+#line 3422 "phase4.tab.c"
     break;
 
   case 462: /* percentequals: "%="  */
@@ -3422,7 +3428,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_PERCENTEQUALS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3426 "phase4.tab.c"
+#line 3432 "phase4.tab.c"
     break;
 
   case 463: /* plusequals: "+="  */
@@ -3432,7 +3438,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_PLUSEQUALS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3436 "phase4.tab.c"
+#line 3442 "phase4.tab.c"
     break;
 
   case 464: /* minusequals: "-="  */
@@ -3442,7 +3448,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_MINUSEQUALS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3446 "phase4.tab.c"
+#line 3452 "phase4.tab.c"
     break;
 
   case 465: /* leftleftequals: "<<="  */
@@ -3452,7 +3458,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_LEFTLEFTEQUALS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3456 "phase4.tab.c"
+#line 3462 "phase4.tab.c"
     break;
 
   case 466: /* rightrightequals: ">>="  */
@@ -3462,7 +3468,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_RIGHTRIGHTEQUALS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3466 "phase4.tab.c"
+#line 3472 "phase4.tab.c"
     break;
 
   case 467: /* ampequals: "&="  */
@@ -3472,7 +3478,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_AMPEQUALS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3476 "phase4.tab.c"
+#line 3482 "phase4.tab.c"
     break;
 
   case 468: /* caratequals: "^="  */
@@ -3482,7 +3488,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_CARATEQUALS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3486 "phase4.tab.c"
+#line 3492 "phase4.tab.c"
     break;
 
   case 469: /* pipeequals: "|="  */
@@ -3492,7 +3498,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_PIPEEQUALS; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3496 "phase4.tab.c"
+#line 3502 "phase4.tab.c"
     break;
 
   case 470: /* comma: ","  */
@@ -3502,7 +3508,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_COMMA; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3506 "phase4.tab.c"
+#line 3512 "phase4.tab.c"
     break;
 
   case 471: /* hash: "#"  */
@@ -3512,7 +3518,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_HASH; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3516 "phase4.tab.c"
+#line 3522 "phase4.tab.c"
     break;
 
   case 472: /* hashhash: "##"  */
@@ -3522,7 +3528,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_HASHHASH; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3526 "phase4.tab.c"
+#line 3532 "phase4.tab.c"
     break;
 
   case 473: /* sizeof: "sizeof"  */
@@ -3532,7 +3538,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_SIZEOF; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3536 "phase4.tab.c"
+#line 3542 "phase4.tab.c"
     break;
 
   case 474: /* alignof: "_Alignof"  */
@@ -3542,7 +3548,7 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_ALIGNOF; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3546 "phase4.tab.c"
+#line 3552 "phase4.tab.c"
     break;
 
   case 475: /* other_char: OTHER_CHAR  */
@@ -3552,11 +3558,11 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     ((*yyvalp).token)->type = PP_OTHER_CHAR; 
     ((*yyvalp).token)->text = mycopystr(scanner); 
 }
-#line 3556 "phase4.tab.c"
+#line 3562 "phase4.tab.c"
     break;
 
 
-#line 3560 "phase4.tab.c"
+#line 3566 "phase4.tab.c"
 
       default: break;
     }
@@ -3608,385 +3614,385 @@ yydestruct (const char *yymsg,
     case YYSYMBOL_replacement_list: /* replacement_list  */
 #line 90 "phase4.y"
             { free(((*yyvaluep).token_list)); }
-#line 3612 "phase4.tab.c"
+#line 3618 "phase4.tab.c"
         break;
 
     case YYSYMBOL_pp_tokens_opt: /* pp_tokens_opt  */
 #line 90 "phase4.y"
             { free(((*yyvaluep).token_list)); }
-#line 3618 "phase4.tab.c"
+#line 3624 "phase4.tab.c"
         break;
 
     case YYSYMBOL_pp_tokens: /* pp_tokens  */
 #line 90 "phase4.y"
             { free(((*yyvaluep).token_list)); }
-#line 3624 "phase4.tab.c"
+#line 3630 "phase4.tab.c"
         break;
 
     case YYSYMBOL_identifier_list_opt: /* identifier_list_opt  */
 #line 92 "phase4.y"
             { free(((*yyvaluep).identifier_list)->text); free(((*yyvaluep).identifier_list)); }
-#line 3630 "phase4.tab.c"
+#line 3636 "phase4.tab.c"
         break;
 
     case YYSYMBOL_identifier_list: /* identifier_list  */
 #line 92 "phase4.y"
             { free(((*yyvaluep).identifier_list)->text); free(((*yyvaluep).identifier_list)); }
-#line 3636 "phase4.tab.c"
+#line 3642 "phase4.tab.c"
         break;
 
     case YYSYMBOL_preprocessing_token: /* preprocessing_token  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3642 "phase4.tab.c"
+#line 3648 "phase4.tab.c"
         break;
 
     case YYSYMBOL_identifier: /* identifier  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3648 "phase4.tab.c"
+#line 3654 "phase4.tab.c"
         break;
 
     case YYSYMBOL_header_name: /* header_name  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3654 "phase4.tab.c"
+#line 3660 "phase4.tab.c"
         break;
 
     case YYSYMBOL_integral_constant: /* integral_constant  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3660 "phase4.tab.c"
+#line 3666 "phase4.tab.c"
         break;
 
     case YYSYMBOL_floating_constant: /* floating_constant  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3666 "phase4.tab.c"
+#line 3672 "phase4.tab.c"
         break;
 
     case YYSYMBOL_character_constant: /* character_constant  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3672 "phase4.tab.c"
+#line 3678 "phase4.tab.c"
         break;
 
     case YYSYMBOL_string_literal: /* string_literal  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3678 "phase4.tab.c"
+#line 3684 "phase4.tab.c"
         break;
 
     case YYSYMBOL_lbrack: /* lbrack  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3684 "phase4.tab.c"
+#line 3690 "phase4.tab.c"
         break;
 
     case YYSYMBOL_rbrack: /* rbrack  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3690 "phase4.tab.c"
+#line 3696 "phase4.tab.c"
         break;
 
     case YYSYMBOL_connected_lparen: /* connected_lparen  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3696 "phase4.tab.c"
+#line 3702 "phase4.tab.c"
         break;
 
     case YYSYMBOL_lparen: /* lparen  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3702 "phase4.tab.c"
+#line 3708 "phase4.tab.c"
         break;
 
     case YYSYMBOL_rparen: /* rparen  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3708 "phase4.tab.c"
+#line 3714 "phase4.tab.c"
         break;
 
     case YYSYMBOL_lbrace: /* lbrace  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3714 "phase4.tab.c"
+#line 3720 "phase4.tab.c"
         break;
 
     case YYSYMBOL_rbrace: /* rbrace  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3720 "phase4.tab.c"
+#line 3726 "phase4.tab.c"
         break;
 
     case YYSYMBOL_dot: /* dot  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3726 "phase4.tab.c"
+#line 3732 "phase4.tab.c"
         break;
 
     case YYSYMBOL_arrow: /* arrow  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3732 "phase4.tab.c"
+#line 3738 "phase4.tab.c"
         break;
 
     case YYSYMBOL_plusplus: /* plusplus  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3738 "phase4.tab.c"
+#line 3744 "phase4.tab.c"
         break;
 
     case YYSYMBOL_minusminus: /* minusminus  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3744 "phase4.tab.c"
+#line 3750 "phase4.tab.c"
         break;
 
     case YYSYMBOL_amp: /* amp  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3750 "phase4.tab.c"
+#line 3756 "phase4.tab.c"
         break;
 
     case YYSYMBOL_star: /* star  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3756 "phase4.tab.c"
+#line 3762 "phase4.tab.c"
         break;
 
     case YYSYMBOL_plus: /* plus  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3762 "phase4.tab.c"
+#line 3768 "phase4.tab.c"
         break;
 
     case YYSYMBOL_minus: /* minus  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3768 "phase4.tab.c"
+#line 3774 "phase4.tab.c"
         break;
 
     case YYSYMBOL_tilde: /* tilde  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3774 "phase4.tab.c"
+#line 3780 "phase4.tab.c"
         break;
 
     case YYSYMBOL_bang: /* bang  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3780 "phase4.tab.c"
+#line 3786 "phase4.tab.c"
         break;
 
     case YYSYMBOL_slash: /* slash  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3786 "phase4.tab.c"
+#line 3792 "phase4.tab.c"
         break;
 
     case YYSYMBOL_percent: /* percent  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3792 "phase4.tab.c"
+#line 3798 "phase4.tab.c"
         break;
 
     case YYSYMBOL_leftleft: /* leftleft  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3798 "phase4.tab.c"
+#line 3804 "phase4.tab.c"
         break;
 
     case YYSYMBOL_rightright: /* rightright  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3804 "phase4.tab.c"
+#line 3810 "phase4.tab.c"
         break;
 
     case YYSYMBOL_left: /* left  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3810 "phase4.tab.c"
+#line 3816 "phase4.tab.c"
         break;
 
     case YYSYMBOL_right: /* right  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3816 "phase4.tab.c"
+#line 3822 "phase4.tab.c"
         break;
 
     case YYSYMBOL_leftequals: /* leftequals  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3822 "phase4.tab.c"
+#line 3828 "phase4.tab.c"
         break;
 
     case YYSYMBOL_rightequals: /* rightequals  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3828 "phase4.tab.c"
+#line 3834 "phase4.tab.c"
         break;
 
     case YYSYMBOL_equalsequals: /* equalsequals  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3834 "phase4.tab.c"
+#line 3840 "phase4.tab.c"
         break;
 
     case YYSYMBOL_bangequals: /* bangequals  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3840 "phase4.tab.c"
+#line 3846 "phase4.tab.c"
         break;
 
     case YYSYMBOL_carat: /* carat  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3846 "phase4.tab.c"
+#line 3852 "phase4.tab.c"
         break;
 
     case YYSYMBOL_pipe: /* pipe  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3852 "phase4.tab.c"
+#line 3858 "phase4.tab.c"
         break;
 
     case YYSYMBOL_ampamp: /* ampamp  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3858 "phase4.tab.c"
+#line 3864 "phase4.tab.c"
         break;
 
     case YYSYMBOL_pipepipe: /* pipepipe  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3864 "phase4.tab.c"
+#line 3870 "phase4.tab.c"
         break;
 
     case YYSYMBOL_question: /* question  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3870 "phase4.tab.c"
+#line 3876 "phase4.tab.c"
         break;
 
     case YYSYMBOL_colon: /* colon  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3876 "phase4.tab.c"
+#line 3882 "phase4.tab.c"
         break;
 
     case YYSYMBOL_semicolon: /* semicolon  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3882 "phase4.tab.c"
+#line 3888 "phase4.tab.c"
         break;
 
     case YYSYMBOL_ellipsis: /* ellipsis  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3888 "phase4.tab.c"
+#line 3894 "phase4.tab.c"
         break;
 
     case YYSYMBOL_equals: /* equals  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3894 "phase4.tab.c"
+#line 3900 "phase4.tab.c"
         break;
 
     case YYSYMBOL_starequals: /* starequals  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3900 "phase4.tab.c"
+#line 3906 "phase4.tab.c"
         break;
 
     case YYSYMBOL_slashequals: /* slashequals  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3906 "phase4.tab.c"
+#line 3912 "phase4.tab.c"
         break;
 
     case YYSYMBOL_percentequals: /* percentequals  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3912 "phase4.tab.c"
+#line 3918 "phase4.tab.c"
         break;
 
     case YYSYMBOL_plusequals: /* plusequals  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3918 "phase4.tab.c"
+#line 3924 "phase4.tab.c"
         break;
 
     case YYSYMBOL_minusequals: /* minusequals  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3924 "phase4.tab.c"
+#line 3930 "phase4.tab.c"
         break;
 
     case YYSYMBOL_leftleftequals: /* leftleftequals  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3930 "phase4.tab.c"
+#line 3936 "phase4.tab.c"
         break;
 
     case YYSYMBOL_rightrightequals: /* rightrightequals  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3936 "phase4.tab.c"
+#line 3942 "phase4.tab.c"
         break;
 
     case YYSYMBOL_ampequals: /* ampequals  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3942 "phase4.tab.c"
+#line 3948 "phase4.tab.c"
         break;
 
     case YYSYMBOL_caratequals: /* caratequals  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3948 "phase4.tab.c"
+#line 3954 "phase4.tab.c"
         break;
 
     case YYSYMBOL_pipeequals: /* pipeequals  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3954 "phase4.tab.c"
+#line 3960 "phase4.tab.c"
         break;
 
     case YYSYMBOL_comma: /* comma  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3960 "phase4.tab.c"
+#line 3966 "phase4.tab.c"
         break;
 
     case YYSYMBOL_hash: /* hash  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3966 "phase4.tab.c"
+#line 3972 "phase4.tab.c"
         break;
 
     case YYSYMBOL_hashhash: /* hashhash  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3972 "phase4.tab.c"
+#line 3978 "phase4.tab.c"
         break;
 
     case YYSYMBOL_sizeof: /* sizeof  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3978 "phase4.tab.c"
+#line 3984 "phase4.tab.c"
         break;
 
     case YYSYMBOL_alignof: /* alignof  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3984 "phase4.tab.c"
+#line 3990 "phase4.tab.c"
         break;
 
     case YYSYMBOL_other_char: /* other_char  */
 #line 91 "phase4.y"
             { free(((*yyvaluep).token)->text); free(((*yyvaluep).token)); }
-#line 3990 "phase4.tab.c"
+#line 3996 "phase4.tab.c"
         break;
 
       default:

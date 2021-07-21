@@ -1,0 +1,24 @@
+file <- g:group? { printf("EOF\n"); }
+
+group <- group_part+
+
+group_part <- if_section 
+            / control_line 
+            / text_line 
+            / "#" non_directive
+
+if_section <- if_group elif_groups? else_group? endif_line
+
+if_group <- "#" "if" constant_expression EOL group?
+          / "#" "ifdef" identifier EOL group?
+          / "#" "ifndef" identifier EOL group?
+
+elif_groups <- elif_group+
+
+elif_group <- "#" "elif" constant_expression EOL group?
+
+else_group <- "#" "else" EOL group?
+
+endif_line <- "#" "endif" EOL
+
+EOL <- "\n" / "\r\n"
