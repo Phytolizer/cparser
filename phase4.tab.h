@@ -48,7 +48,7 @@
 extern int phase4debug;
 #endif
 /* "%code requires" blocks.  */
-#line 109 "phase4.y"
+#line 139 "phase4.y"
 
 typedef void *yyscan_t;
 
@@ -134,7 +134,36 @@ typedef void *yyscan_t;
     PP_PRAGMA = 326,               /* "pragma"  */
     PP_SIZEOF = 327,               /* "sizeof"  */
     PP_ALIGNOF = 328,              /* "_Alignof"  */
-    PP_OTHER_CHAR = 329            /* OTHER_CHAR  */
+    PP_GENERIC = 329,              /* "_Generic"  */
+    PP_STATIC = 330,               /* "static"  */
+    PP_CONST = 331,                /* "const"  */
+    PP_RESTRICT = 332,             /* "restrict"  */
+    PP_VOLATILE = 333,             /* "volatile"  */
+    PP_ATOMIC = 334,               /* "_Atomic"  */
+    PP_VOID = 335,                 /* "void"  */
+    PP_CHAR = 336,                 /* "char"  */
+    PP_SHORT = 337,                /* "short"  */
+    PP_INT = 338,                  /* "int"  */
+    PP_LONG = 339,                 /* "long"  */
+    PP_FLOAT = 340,                /* "float"  */
+    PP_DOUBLE = 341,               /* "double"  */
+    PP_SIGNED = 342,               /* "signed"  */
+    PP_UNSIGNED = 343,             /* "unsigned"  */
+    PP_BOOL = 344,                 /* "_Bool"  */
+    PP_COMPLEX = 345,              /* "_Complex"  */
+    PP_STRUCT = 346,               /* "struct"  */
+    PP_UNION = 347,                /* "union"  */
+    PP_ENUM = 348,                 /* "enum"  */
+    PP_ALIGNAS = 349,              /* "_Alignas"  */
+    PP_STATIC_ASSERT = 350,        /* "_Static_assert"  */
+    PP_TYPEDEF = 351,              /* "typedef"  */
+    PP_EXTERN = 352,               /* "extern"  */
+    PP_THREAD_LOCAL = 353,         /* "_Thread_local"  */
+    PP_AUTO = 354,                 /* "auto"  */
+    PP_REGISTER = 355,             /* "register"  */
+    PP_INLINE = 356,               /* "inline"  */
+    PP_NORETURN = 357,             /* "_Noreturn"  */
+    PP_OTHER_CHAR = 358            /* OTHER_CHAR  */
   };
   typedef enum phase4tokentype phase4token_kind_t;
 #endif
@@ -143,13 +172,13 @@ typedef void *yyscan_t;
 #if ! defined PHASE4STYPE && ! defined PHASE4STYPE_IS_DECLARED
 union PHASE4STYPE
 {
-#line 84 "phase4.y"
+#line 114 "phase4.y"
 
     struct token *token;
     struct token_list *token_list;
     struct identifier_list *identifier_list;
 
-#line 153 "phase4.tab.h"
+#line 182 "phase4.tab.h"
 
 };
 typedef union PHASE4STYPE PHASE4STYPE;
@@ -175,12 +204,12 @@ struct PHASE4LTYPE
 
 int phase4parse (yyscan_t scanner);
 /* "%code provides" blocks.  */
-#line 113 "phase4.y"
+#line 143 "phase4.y"
 
 #define YY_DECL \
     int phase3lex(PHASE4STYPE *yylval_param, PHASE4LTYPE *yylloc_param, yyscan_t yyscanner)
 YY_DECL;
 
-#line 185 "phase4.tab.h"
+#line 214 "phase4.tab.h"
 
 #endif /* !YY_PHASE4_PHASE4_TAB_H_INCLUDED  */
