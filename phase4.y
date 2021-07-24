@@ -323,12 +323,12 @@ identifier_list_opt: identifier_list { $$ = $1; }
 
 identifier_list: identifier comma identifier_list {
         $$ = malloc(sizeof(struct identifier_list));
-        $$->text = mycopystr(scanner);
+        $$->text = strdup($1->text);
         $$->next = $3;
     }
     | identifier {
         $$ = malloc(sizeof(struct identifier_list));
-        $$->text = mycopystr(scanner);
+        $$->text = strdup($1->text);
         $$->next = NULL;
     }
     ;
@@ -398,7 +398,6 @@ preprocessing_token:
     | string_literal
     | lbrack
     | rbrack
-    | connected_lparen
     | lparen
     | rparen
     | lbrace
@@ -447,6 +446,34 @@ preprocessing_token:
     | hashhash
     | sizeof
     | alignof
+    | short
+    | int
+    | long
+    | float
+    | double
+    | void
+    | bool
+    | static
+    | const
+    | restrict
+    | volatile
+    | atomic
+    | char
+    | signed
+    | unsigned
+    | complex
+    | struct
+    | union
+    | enum
+    | alignas
+    | static_assert
+    | typedef
+    | extern
+    | thread_local
+    | auto
+    | register
+    | inline
+    | noreturn
     | other_char
     ;
 

@@ -18,6 +18,15 @@ extern "C"
 #include <fstream>
 #include <sstream>
 
+struct Macro
+{
+    const token *name;
+    bool isFunctionLike;
+    bool isVariadic;
+    std::vector<std::string> args;
+    std::vector<const token *> replacement;
+};
+
 static RawSource readSource(std::string_view fileName);
 static TokenizedSource tokenize(RawSource source);
 
@@ -25,6 +34,8 @@ constexpr static std::array includePath{
     "",
     "/usr/include",
 };
+
+static std::unordered_map<std::string, Macro> macros;
 
 void compile(std::string_view fileName)
 {
@@ -95,20 +106,72 @@ void include_file(const token_list *tokens)
     compile(std::string_view{tokens->token->text + 1, tokens->token->text + strlen(tokens->token->text) - 1});
 }
 
-void define_simple_macro(const token *name, token_list *replacement)
+void define_simple_macro(const token *name, const token_list *replacement)
+{
+    Macro macro{
+        .name = name,
+        .isFunctionLike = false,
+        .isVariadic = false,
+        .args = {},
+        .replacement = {},
+    };
+    fmt::print("defining simple macro '{}'\n", name->text);
+    fmt::print("replacement: '");
+    for (const auto *tok = replacement; tok; tok = tok->next)
+    {
+        fmt::print("{}", tok->token->text);
+        if (tok->next)
+        {
+            fmt::print(" ");
+        }
+        macro.replacement.push_back(tok->token);
+    }
+    std::reverse(macro.replacement.begin(), macro.replacement.end());
+    fmt::print("'\n");
+    macros.emplace(std::string{name->text}, macro);
+}
+
+void define_function_like_macro(const token *name, const identifier_list *parameters, const token_list *replacement)
+{
+    Macro macro{
+        .name = name,
+        .isFunctionLike = true,
+        .isVariadic = false,
+        .args = {},
+        .replacement = {},
+    };
+    fmt::print("defining function-like macro '{}'\n", name->text);
+    fmt::print("parameters: (");
+    for (const auto *param = parameters; param; param = param->next)
+    {
+        fmt::print("{}", param->text);
+        if (param->next)
+        {
+            fmt::print(", ");
+        }
+        macro.args.push_back(param->text);
+    }
+    fmt::print(")\n");
+    fmt::print("replacement: '");
+    for (const auto *tok = replacement; tok; tok = tok->next)
+    {
+        fmt::print("{}", tok->token->text);
+        if (tok->next)
+        {
+            fmt::print(" ");
+        }
+        macro.replacement.push_back(tok->token);
+    }
+    fmt::print("'\n");
+    macros.emplace(std::string{name->text}, macro);
+}
+
+void define_function_like_variadic_macro(const token *name, const token_list *replacement)
 {
 }
 
-void define_function_like_macro(const token *name, identifier_list *parameters, token_list *replacement)
-{
-}
-
-void define_function_like_variadic_macro(const token *name, token_list *replacement)
-{
-}
-
-void define_function_like_variadic_macro_with_args(const token *name, identifier_list *parameters,
-                                                   token_list *replacement)
+void define_function_like_variadic_macro_with_args(const token *name, const identifier_list *parameters,
+                                                   const token_list *replacement)
 {
 }
 

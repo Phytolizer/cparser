@@ -10,7 +10,7 @@ extern "C"
 
     struct token
     {
-        enum phase4tokentype type;
+        phase4token_kind_t type;
         char *text;
     };
 
@@ -27,13 +27,13 @@ extern "C"
     };
 
     extern void include_file(const struct token_list *tokens);
-    extern void define_simple_macro(const struct token *name, struct token_list *replacement);
-    extern void define_function_like_macro(const struct token *name, struct identifier_list *parameters,
-                                           struct token_list *replacement);
-    extern void define_function_like_variadic_macro(const struct token *name, struct token_list *replacement);
+    extern void define_simple_macro(const struct token *name, const struct token_list *replacement);
+    extern void define_function_like_macro(const struct token *name, const struct identifier_list *parameters,
+                                           const struct token_list *replacement);
+    extern void define_function_like_variadic_macro(const struct token *name, const struct token_list *replacement);
     extern void define_function_like_variadic_macro_with_args(const struct token *name,
-                                                              struct identifier_list *parameters,
-                                                              struct token_list *replacement);
+                                                              const struct identifier_list *parameters,
+                                                              const struct token_list *replacement);
     extern void undefine_macro(const struct token *name);
 
 #ifdef __cplusplus
