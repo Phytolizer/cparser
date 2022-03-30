@@ -297,6 +297,7 @@ cpr::token cpr::lexer::iterator::scan_identifier() noexcept {
 }
 
 cpr::token cpr::lexer::iterator::scan_number() noexcept {
+    // TODO(kyle): no FP number support here
     auto start = m_current;
     while (true) {
         if (m_current == m_end || !std::isdigit(*m_current)) {
