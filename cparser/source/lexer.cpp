@@ -299,17 +299,30 @@ cc::token cc::lexer::iterator::scan_identifier() noexcept {
 cc::token cc::lexer::iterator::scan_number() noexcept {
     // TODO(kyle): no FP number support here
     auto start = m_current;
-    while (true) {
-        if (!std::isdigit(current())) {
-            return token{
-                    syntax_kind::integer_constant_token,
-                    source_span{start - m_begin, m_current - m_begin},
-                    std::string{start, m_current},
-            };
-        }
 
+    if (current() == '0') {
         advance();
+        if (current() == 'x' || current() == 'X') {
+            advance();
+            while (std::isxdigit(current())) {
+                advance();
+            }
+        } else {
+            while (current() >= '0' && current() <= '7') {
+                advance();
+            }
+        }
+    } else {
+        while (std::isdigit(current())) {
+            advance();
+        }
     }
+
+    return token{
+            syntax_kind::integer_constant_token,
+            source_span{start - m_begin, m_current - m_begin},
+            std::string{start, m_current},
+    };
 }
 
 cc::syntax_kind cc::lexer::iterator::recognize_keyword(std::string_view text) const noexcept {
