@@ -306,15 +306,18 @@ cc::token cc::lexer::iterator::scan_identifier() noexcept {
 cc::token cc::lexer::iterator::scan_number() noexcept {
     // TODO(kyle): no FP number support here
     auto start = m_current;
+    auto kind = syntax_kind::decimal_constant_token;
 
     if (current() == '0') {
         advance();
         if (current() == 'x' || current() == 'X') {
+            kind = syntax_kind::hexadecimal_constant_token;
             advance();
             while (std::isxdigit(current())) {
                 advance();
             }
         } else {
+            kind = syntax_kind::octal_constant_token;
             while (current() >= '0' && current() <= '7') {
                 advance();
             }
@@ -326,7 +329,7 @@ cc::token cc::lexer::iterator::scan_number() noexcept {
     }
 
     return token{
-            syntax_kind::integer_constant_token,
+            kind,
             source_span{start - m_begin, m_current - m_begin},
             std::string{start, m_current},
     };

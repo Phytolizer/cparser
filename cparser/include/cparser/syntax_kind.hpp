@@ -54,7 +54,9 @@ enum class syntax_kind {
     // Constants
     // ----
     floating_constant_token,
-    integer_constant_token,
+    decimal_constant_token,
+    hexadecimal_constant_token,
+    octal_constant_token,
     character_constant_token,
     string_literal_token,
 
