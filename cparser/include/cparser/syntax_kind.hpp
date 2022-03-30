@@ -2,7 +2,7 @@
 
 #include "magic_enum.hpp"
 
-namespace cpr {
+namespace cc {
 
 enum class syntax_kind {
     // ====
@@ -123,4 +123,4 @@ enum class syntax_kind {
     // TBD
 };
 
-} // namespace cpr
+} // namespace cc

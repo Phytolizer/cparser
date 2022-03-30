@@ -11,8 +11,8 @@ int main() {
             break;
         }
 
-        cpr::lexer lexer{std::move(line)};
-        for (cpr::token tok : lexer) {
+        cc::lexer lexer{std::move(line)};
+        for (cc::token tok : lexer) {
             std::cout << tok << '\n';
         }
     }

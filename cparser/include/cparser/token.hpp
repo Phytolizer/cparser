@@ -6,7 +6,7 @@
 #include <ostream>
 #include <string>
 
-namespace cpr {
+namespace cc {
 
 struct token final {
     syntax_kind kind;
@@ -19,4 +19,4 @@ struct token final {
     friend std::ostream& operator<<(std::ostream& os, const token& tok);
 };
 
-} // namespace cpr
+} // namespace cc

@@ -2,7 +2,7 @@
 
 #include <cstddef>
 #include <string>
-namespace cpr {
+namespace cc {
 
 struct source_span final {
     std::ptrdiff_t begin;
@@ -13,4 +13,4 @@ struct source_span final {
         : begin(begin), end(end) {}
 };
 
-} // namespace cpr
+} // namespace cc

@@ -12,17 +12,17 @@
 #include <string_view>
 #include <unordered_map>
 
-cpr::lexer::lexer(std::string&& source_text) noexcept : m_source_text(std::move(source_text)) {}
+cc::lexer::lexer(std::string&& source_text) noexcept : m_source_text(std::move(source_text)) {}
 
-cpr::lexer::iterator cpr::lexer::begin() const noexcept {
+cc::lexer::iterator cc::lexer::begin() const noexcept {
     return iterator{m_source_text.begin(), m_source_text.end()};
 }
 
-cpr::lexer::iterator cpr::lexer::end() const noexcept {
+cc::lexer::iterator cc::lexer::end() const noexcept {
     return iterator{};
 }
 
-cpr::token cpr::lexer::iterator::scan_token() noexcept {
+cc::token cc::lexer::iterator::scan_token() noexcept {
     if (m_is_end) {
         return {};
     }
@@ -265,7 +265,7 @@ cpr::token cpr::lexer::iterator::scan_token() noexcept {
     };
 }
 
-cpr::token cpr::lexer::iterator::scan_comment() noexcept {
+cc::token cc::lexer::iterator::scan_comment() noexcept {
     auto start = m_current;
     while (true) {
         if (current() == '*' && look() == '/') {
@@ -281,7 +281,7 @@ cpr::token cpr::lexer::iterator::scan_comment() noexcept {
     }
 }
 
-cpr::token cpr::lexer::iterator::scan_identifier() noexcept {
+cc::token cc::lexer::iterator::scan_identifier() noexcept {
     auto start = m_current;
     while (true) {
         if (!std::isalnum(current()) && current() != '_') {
@@ -296,7 +296,7 @@ cpr::token cpr::lexer::iterator::scan_identifier() noexcept {
     }
 }
 
-cpr::token cpr::lexer::iterator::scan_number() noexcept {
+cc::token cc::lexer::iterator::scan_number() noexcept {
     // TODO(kyle): no FP number support here
     auto start = m_current;
     while (true) {
@@ -312,7 +312,7 @@ cpr::token cpr::lexer::iterator::scan_number() noexcept {
     }
 }
 
-cpr::syntax_kind cpr::lexer::iterator::recognize_keyword(std::string_view text) const noexcept {
+cc::syntax_kind cc::lexer::iterator::recognize_keyword(std::string_view text) const noexcept {
     static const std::unordered_map<std::string_view, syntax_kind> keywords = {
             {"auto", syntax_kind::auto_token},
             {"double", syntax_kind::double_token},
@@ -355,7 +355,7 @@ cpr::syntax_kind cpr::lexer::iterator::recognize_keyword(std::string_view text) 
     return syntax_kind::identifier_token;
 }
 
-char cpr::lexer::iterator::look(std::ptrdiff_t offset) const noexcept {
+char cc::lexer::iterator::look(std::ptrdiff_t offset) const noexcept {
     auto it = m_current + offset;
     if (it >= m_end) {
         return '\0';
@@ -364,20 +364,20 @@ char cpr::lexer::iterator::look(std::ptrdiff_t offset) const noexcept {
     return *it;
 }
 
-char cpr::lexer::iterator::current() const noexcept {
+char cc::lexer::iterator::current() const noexcept {
     if (m_current == m_end) {
         return '\0';
     }
     return *m_current;
 }
 
-cpr::lexer::iterator::iterator(
+cc::lexer::iterator::iterator(
         std::string::const_iterator begin, std::string::const_iterator end) noexcept
     : m_begin(begin), m_current(begin), m_end(end), m_is_end(false), m_just_scanned(scan_token()) {}
 
-cpr::lexer::iterator::iterator() : m_is_end(true) {}
+cc::lexer::iterator::iterator() : m_is_end(true) {}
 
-bool cpr::lexer::iterator::operator==(const iterator& other) const noexcept {
+bool cc::lexer::iterator::operator==(const iterator& other) const noexcept {
     if (m_is_end) {
         return other.m_is_end;
     }
@@ -389,17 +389,17 @@ bool cpr::lexer::iterator::operator==(const iterator& other) const noexcept {
     return m_current == other.m_current;
 }
 
-cpr::lexer::iterator& cpr::lexer::iterator::operator++() noexcept {
+cc::lexer::iterator& cc::lexer::iterator::operator++() noexcept {
     m_just_scanned = scan_token();
     return *this;
 }
 
-cpr::lexer::iterator cpr::lexer::iterator::operator++(int) noexcept {
+cc::lexer::iterator cc::lexer::iterator::operator++(int) noexcept {
     auto result = *this;
     ++*this;
     return result;
 }
 
-cpr::token cpr::lexer::iterator::operator*() const noexcept {
+cc::token cc::lexer::iterator::operator*() const noexcept {
     return m_just_scanned;
 }

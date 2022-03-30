@@ -9,7 +9,7 @@
 #include <string>
 #include <string_view>
 
-namespace cpr {
+namespace cc {
 
 class lexer final {
     std::string m_source_text;
@@ -52,4 +52,4 @@ class lexer final {
 
 static_assert(std::ranges::range<lexer>);
 
-} // namespace cpr
+} // namespace cc
