@@ -2,8 +2,11 @@
 #include "cparser/token.hpp"
 #include "fmt/core.h"
 
+#include <algorithm>
 #include <iostream>
+#include <ranges>
 #include <string>
+#include <vector>
 
 int main() {
     std::string line;
@@ -13,9 +16,8 @@ int main() {
         }
 
         cc::lexer lexer{std::move(line)};
-        for (cc::token tok : lexer) {
-            fmt::print("{}\n", tok);
-        }
+        std::vector<cc::token> tokens;
+        std::ranges::copy(lexer, std::back_inserter(tokens));
         for (const auto& diag : lexer.diagnostics()) {
             fmt::print("{}: {}\n", diag.span, diag);
         }
