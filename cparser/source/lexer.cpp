@@ -247,8 +247,7 @@ cpr::token cpr::lexer::iterator::scan_token() noexcept {
 
                 kind = syntax_kind::whitespace_token;
             } else if (std::isdigit(*m_current)) {
-                // TODO(kyle): this is hard
-                // return scan_number();
+                return scan_number();
             } else if (std::isalpha(*m_current) || *m_current == '_') {
                 return scan_identifier();
             }
@@ -288,6 +287,21 @@ cpr::token cpr::lexer::iterator::scan_identifier() noexcept {
         if (m_current == m_end || (!std::isalnum(*m_current) && *m_current != '_')) {
             return token{
                     recognize_keyword(std::string_view{start, m_current}),
+                    source_span{start - m_begin, m_current - m_begin},
+                    std::string{start, m_current},
+            };
+        }
+
+        m_current += 1;
+    }
+}
+
+cpr::token cpr::lexer::iterator::scan_number() noexcept {
+    auto start = m_current;
+    while (true) {
+        if (m_current == m_end || !std::isdigit(*m_current)) {
+            return token{
+                    syntax_kind::integer_constant_token,
                     source_span{start - m_begin, m_current - m_begin},
                     std::string{start, m_current},
             };
