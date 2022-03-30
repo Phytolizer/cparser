@@ -12,6 +12,8 @@
 #include <string_view>
 #include <unordered_map>
 
+using namespace std::string_view_literals;
+
 cc::lexer::lexer(std::string&& source_text) noexcept : m_source_text(std::move(source_text)) {}
 
 cc::lexer::iterator cc::lexer::begin() noexcept {
@@ -392,38 +394,38 @@ cc::token cc::lexer::iterator::scan_character_literal() noexcept {
 
 cc::syntax_kind cc::lexer::iterator::recognize_keyword(std::string_view text) const noexcept {
     static const std::unordered_map<std::string_view, syntax_kind> keywords = {
-            {"auto", syntax_kind::auto_token},
-            {"double", syntax_kind::double_token},
-            {"int", syntax_kind::int_token},
-            {"struct", syntax_kind::struct_token},
-            {"break", syntax_kind::break_token},
-            {"else", syntax_kind::else_token},
-            {"long", syntax_kind::long_token},
-            {"switch", syntax_kind::switch_token},
-            {"case", syntax_kind::case_token},
-            {"enum", syntax_kind::enum_token},
-            {"register", syntax_kind::register_token},
-            {"typedef", syntax_kind::typedef_token},
-            {"char", syntax_kind::char_token},
-            {"extern", syntax_kind::extern_token},
-            {"return", syntax_kind::return_token},
-            {"union", syntax_kind::union_token},
-            {"const", syntax_kind::const_token},
-            {"float", syntax_kind::float_token},
-            {"short", syntax_kind::short_token},
-            {"unsigned", syntax_kind::unsigned_token},
-            {"continue", syntax_kind::continue_token},
-            {"for", syntax_kind::for_token},
-            {"signed", syntax_kind::signed_token},
-            {"void", syntax_kind::void_token},
-            {"default", syntax_kind::default_token},
-            {"goto", syntax_kind::goto_token},
-            {"sizeof", syntax_kind::sizeof_token},
-            {"volatile", syntax_kind::volatile_token},
-            {"do", syntax_kind::do_token},
-            {"if", syntax_kind::if_token},
-            {"static", syntax_kind::static_token},
-            {"while", syntax_kind::while_token},
+            {"auto"sv, syntax_kind::auto_token},
+            {"double"sv, syntax_kind::double_token},
+            {"int"sv, syntax_kind::int_token},
+            {"struct"sv, syntax_kind::struct_token},
+            {"break"sv, syntax_kind::break_token},
+            {"else"sv, syntax_kind::else_token},
+            {"long"sv, syntax_kind::long_token},
+            {"switch"sv, syntax_kind::switch_token},
+            {"case"sv, syntax_kind::case_token},
+            {"enum"sv, syntax_kind::enum_token},
+            {"register"sv, syntax_kind::register_token},
+            {"typedef"sv, syntax_kind::typedef_token},
+            {"char"sv, syntax_kind::char_token},
+            {"extern"sv, syntax_kind::extern_token},
+            {"return"sv, syntax_kind::return_token},
+            {"union"sv, syntax_kind::union_token},
+            {"const"sv, syntax_kind::const_token},
+            {"float"sv, syntax_kind::float_token},
+            {"short"sv, syntax_kind::short_token},
+            {"unsigned"sv, syntax_kind::unsigned_token},
+            {"continue"sv, syntax_kind::continue_token},
+            {"for"sv, syntax_kind::for_token},
+            {"signed"sv, syntax_kind::signed_token},
+            {"void"sv, syntax_kind::void_token},
+            {"default"sv, syntax_kind::default_token},
+            {"goto"sv, syntax_kind::goto_token},
+            {"sizeof"sv, syntax_kind::sizeof_token},
+            {"volatile"sv, syntax_kind::volatile_token},
+            {"do"sv, syntax_kind::do_token},
+            {"if"sv, syntax_kind::if_token},
+            {"static"sv, syntax_kind::static_token},
+            {"while"sv, syntax_kind::while_token},
     };
 
     auto it = keywords.find(text);
