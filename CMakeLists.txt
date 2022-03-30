@@ -22,3 +22,4 @@ CPMAddPackage(
 enable_testing()
 
 add_subdirectory("cparser")
+add_subdirectory("driver")

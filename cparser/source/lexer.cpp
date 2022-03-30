@@ -9,8 +9,6 @@
 #include <optional>
 #include <string>
 
-cpr::lexer::lexer(std::string source_text) noexcept : m_source_text(std::move(source_text)) {}
-
 cpr::lexer::lexer(std::string&& source_text) noexcept : m_source_text(std::move(source_text)) {}
 
 cpr::lexer::iterator cpr::lexer::begin() const noexcept {
@@ -38,15 +36,19 @@ cpr::token cpr::lexer::iterator::scan_token() noexcept {
     switch (*m_current) {
         case '[':
             kind = syntax_kind::left_bracket_token;
+            m_current += 1;
             break;
         case ']':
             kind = syntax_kind::right_bracket_token;
+            m_current += 1;
             break;
         case '(':
             kind = syntax_kind::left_parenthesis_token;
+            m_current += 1;
             break;
         case ')':
             kind = syntax_kind::right_parenthesis_token;
+            m_current += 1;
             break;
         case '.':
             if (look() != m_end && look(2) != m_end && *look() == '.' && *look(2) == '.') {
