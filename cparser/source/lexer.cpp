@@ -33,7 +33,7 @@ cc::token cc::lexer::iterator::scan_token() noexcept {
         return {};
     }
 
-    if (m_current == m_end) {
+    if (m_current >= m_end) {
         m_is_end = true;
         return {};
     }
@@ -269,8 +269,8 @@ cc::token cc::lexer::iterator::scan_token() noexcept {
 
     return token{
             kind,
-            source_span{start - m_begin, m_current - m_begin},
-            std::string{start, m_current},
+            current_span(start),
+            std::string{current_text(start)},
     };
 }
 
@@ -281,8 +281,8 @@ cc::token cc::lexer::iterator::scan_comment() noexcept {
             advance(2);
             return token{
                     syntax_kind::comment_token,
-                    source_span{start - m_begin, m_current - m_begin},
-                    std::string{start, m_current},
+                    current_span(start),
+                    std::string{current_text(start)},
             };
         }
 
@@ -296,8 +296,8 @@ cc::token cc::lexer::iterator::scan_identifier() noexcept {
         if (!std::isalnum(current()) && current() != '_') {
             return token{
                     recognize_keyword(std::string_view{start, m_current}),
-                    source_span{start - m_begin, m_current - m_begin},
-                    std::string{start, m_current},
+                    current_span(start),
+                    std::string{current_text(start)},
             };
         }
 
@@ -332,8 +332,8 @@ cc::token cc::lexer::iterator::scan_number() noexcept {
 
     return token{
             kind,
-            source_span{start - m_begin, m_current - m_begin},
-            std::string{start, m_current},
+            current_span(start),
+            std::string{current_text(start)},
     };
 }
 
@@ -374,6 +374,14 @@ cc::token cc::lexer::iterator::scan_character_literal() noexcept {
                 advance();
                 break;
         }
+    } else if (current() == '\n' || current() == '\0') {
+        m_diagnostics->report_unterminated_character_literal(
+                current_span(start), current_text(start));
+        return token{
+                syntax_kind::bad_token,
+                current_span(start),
+                std::string{current_text(start)},
+        };
     } else {
         advance();
     }
@@ -382,13 +390,18 @@ cc::token cc::lexer::iterator::scan_character_literal() noexcept {
         advance();
     } else {
         m_diagnostics->report_unterminated_character_literal(
-                {start - m_begin, m_current - m_begin}, std::string_view{start, m_current});
+                current_span(start), current_text(start));
+        return token{
+                syntax_kind::bad_token,
+                current_span(start),
+                std::string{current_text(start)},
+        };
     }
 
     return token{
             syntax_kind::character_constant_token,
-            source_span{start - m_begin, m_current - m_begin},
-            std::string{start, m_current},
+            current_span(start),
+            std::string{current_text(start)},
     };
 }
 
@@ -449,6 +462,16 @@ char cc::lexer::iterator::current() const noexcept {
         return '\0';
     }
     return *m_current;
+}
+
+cc::source_span cc::lexer::iterator::current_span(
+        std::string::const_iterator start) const noexcept {
+    return source_span{start - m_begin, m_current - m_begin};
+}
+
+std::string_view cc::lexer::iterator::current_text(
+        std::string::const_iterator start) const noexcept {
+    return std::string_view{start, m_current};
 }
 
 cc::lexer::iterator::iterator(std::string::const_iterator begin, std::string::const_iterator end,

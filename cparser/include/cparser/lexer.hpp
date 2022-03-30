@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cparser/diagnostic_bag.hpp"
+#include "cparser/source_span.hpp"
 #include "cparser/syntax_kind.hpp"
 #include "cparser/token.hpp"
 
@@ -34,6 +35,8 @@ class lexer final {
         syntax_kind recognize_keyword(std::string_view text) const noexcept;
         char look(std::ptrdiff_t offset = 1) const noexcept;
         char current() const noexcept;
+        source_span current_span(std::string::const_iterator start) const noexcept;
+        std::string_view current_text(std::string::const_iterator start) const noexcept;
         void advance(std::ptrdiff_t count = 1) noexcept;
 
       public:
