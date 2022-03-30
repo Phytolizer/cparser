@@ -21,6 +21,7 @@ class diagnostic_bag final {
     void report_unterminated_string_literal(source_span span, std::string_view text) noexcept;
     void report_illegal_character(std::ptrdiff_t index, char character) noexcept;
     void report_illegal_escape(std::ptrdiff_t index, char character) noexcept;
+    void report_empty_hexadecimal_escape(std::ptrdiff_t index) noexcept;
 
     std::span<const diagnostic> diagnostics() const noexcept;
 };

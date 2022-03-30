@@ -363,6 +363,10 @@ void cc::lexer::iterator::scan_escape_sequence() noexcept {
             break;
         case 'x':
             advance();
+            if (!std::isxdigit(current())) {
+                m_diagnostics->report_empty_hexadecimal_escape(m_current - m_begin - 1);
+                m_reported_diagnostic = true;
+            }
             while (std::isxdigit(current())) {
                 advance();
             }
