@@ -46,7 +46,8 @@
         },
         {
             "name": "dist-vs22",
-            "configurePreset": "dist-vs22"
+            "configurePreset": "dist-vs22",
+            "configuration": "Release"
         }
     ]
 }
