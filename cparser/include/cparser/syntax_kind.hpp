@@ -47,7 +47,8 @@ enum class syntax_kind {
     // Special tokens
     // ----
     identifier_token,
-    angled_header_name_token,
+    whitespace_token,
+    comment_token,
 
     // Constants
     // ----
