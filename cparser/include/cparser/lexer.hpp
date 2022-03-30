@@ -1,11 +1,13 @@
 #pragma once
 
+#include "cparser/syntax_kind.hpp"
 #include "cparser/token.hpp"
 
 #include <cstddef>
 #include <iterator>
 #include <ranges>
 #include <string>
+#include <string_view>
 
 namespace cpr {
 
@@ -21,7 +23,10 @@ class lexer final {
         token m_just_scanned;
 
         token scan_token() noexcept;
-        void scan_comment() noexcept;
+        token scan_comment() noexcept;
+        token scan_identifier() noexcept;
+        // token scan_number() noexcept;
+        syntax_kind recognize_keyword(std::string_view text) const noexcept;
         std::string::const_iterator look(std::ptrdiff_t offset = 1) const noexcept;
 
       public:
