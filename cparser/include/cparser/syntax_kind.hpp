@@ -1,5 +1,6 @@
 #pragma once
 
+#include "fmt/core.h"
 #include "magic_enum.hpp"
 
 namespace cc {
@@ -124,3 +125,13 @@ enum class syntax_kind {
 };
 
 } // namespace cc
+
+template <> struct fmt::formatter<cc::syntax_kind> {
+    template <typename ParseContext> constexpr auto parse(ParseContext& ctx) {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext> auto format(const cc::syntax_kind& kind, FormatContext& ctx) {
+        return format_to(ctx.out(), "{}", magic_enum::enum_name(kind));
+    }
+};

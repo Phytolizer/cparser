@@ -19,6 +19,12 @@ CPMAddPackage(
     GIT_TAG "v0.7.3"
 )
 
+CPMAddPackage(
+    NAME "fmt"
+    GITHUB_REPOSITORY "fmtlib/fmt"
+    GIT_TAG "8.1.1"
+)
+
 enable_testing()
 
 add_subdirectory("cparser")

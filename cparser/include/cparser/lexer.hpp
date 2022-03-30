@@ -1,11 +1,13 @@
 #pragma once
 
+#include "cparser/diagnostic_bag.hpp"
 #include "cparser/syntax_kind.hpp"
 #include "cparser/token.hpp"
 
 #include <cstddef>
 #include <iterator>
 #include <ranges>
+#include <span>
 #include <string>
 #include <string_view>
 
@@ -13,12 +15,14 @@ namespace cc {
 
 class lexer final {
     std::string m_source_text;
+    diagnostic_bag m_diagnostics;
 
   public:
     class iterator {
         std::string::const_iterator m_begin;
         std::string::const_iterator m_current;
         std::string::const_iterator m_end;
+        diagnostic_bag* m_diagnostics;
         bool m_is_end;
         token m_just_scanned;
 
@@ -26,6 +30,7 @@ class lexer final {
         token scan_comment() noexcept;
         token scan_identifier() noexcept;
         token scan_number() noexcept;
+        token scan_character_literal() noexcept;
         syntax_kind recognize_keyword(std::string_view text) const noexcept;
         char look(std::ptrdiff_t offset = 1) const noexcept;
         char current() const noexcept;
@@ -36,7 +41,8 @@ class lexer final {
         using value_type = token;
         using difference_type = std::ptrdiff_t;
 
-        iterator(std::string::const_iterator begin, std::string::const_iterator end) noexcept;
+        iterator(std::string::const_iterator begin, std::string::const_iterator end,
+                diagnostic_bag* diagnostics) noexcept;
         iterator();
 
         bool operator==(const iterator& other) const noexcept;
@@ -47,8 +53,10 @@ class lexer final {
 
     explicit lexer(std::string&& source_text) noexcept;
 
-    iterator begin() const noexcept;
+    iterator begin() noexcept;
     iterator end() const noexcept;
+
+    std::span<const diagnostic> diagnostics() const noexcept;
 };
 
 static_assert(std::ranges::range<lexer>);

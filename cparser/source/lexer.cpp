@@ -14,12 +14,16 @@
 
 cc::lexer::lexer(std::string&& source_text) noexcept : m_source_text(std::move(source_text)) {}
 
-cc::lexer::iterator cc::lexer::begin() const noexcept {
-    return iterator{m_source_text.begin(), m_source_text.end()};
+cc::lexer::iterator cc::lexer::begin() noexcept {
+    return iterator{m_source_text.begin(), m_source_text.end(), &m_diagnostics};
 }
 
 cc::lexer::iterator cc::lexer::end() const noexcept {
     return iterator{};
+}
+
+std::span<const cc::diagnostic> cc::lexer::diagnostics() const noexcept {
+    return m_diagnostics.diagnostics();
 }
 
 cc::token cc::lexer::iterator::scan_token() noexcept {
@@ -239,6 +243,8 @@ cc::token cc::lexer::iterator::scan_token() noexcept {
             kind = syntax_kind::semicolon_token;
             advance();
             break;
+        case '\'':
+            return scan_character_literal();
         default:
             if (std::isspace(*m_current)) {
                 while (std::isspace(*m_current)) {
@@ -255,6 +261,7 @@ cc::token cc::lexer::iterator::scan_token() noexcept {
     }
 
     if (kind == syntax_kind::bad_token) {
+        m_diagnostics->report_illegal_character(m_current - m_begin, current());
         advance();
     }
 
@@ -325,6 +332,61 @@ cc::token cc::lexer::iterator::scan_number() noexcept {
     };
 }
 
+cc::token cc::lexer::iterator::scan_character_literal() noexcept {
+    auto start = m_current;
+    advance();
+
+    if (current() == '\\') {
+        advance();
+        switch (current()) {
+            case '\'':
+            case '"':
+            case '?':
+            case '\\':
+            case 'a':
+            case 'b':
+            case 'f':
+            case 'n':
+            case 'r':
+            case 't':
+            case 'v':
+                advance();
+                break;
+            case '0':
+                advance();
+                for (std::size_t i = 0; i < 2 && current() >= '0' && current() <= '7'; ++i) {
+                    advance();
+                }
+                break;
+            case 'x':
+                advance();
+                while (std::isxdigit(current())) {
+                    advance();
+                }
+                break;
+            default:
+                m_diagnostics->report_illegal_escape(m_current - m_begin - 1, current());
+                advance();
+                break;
+        }
+    } else {
+        advance();
+    }
+
+    if (current() == '\'') {
+        advance();
+    } else {
+        m_diagnostics->report_unterminated_character_literal(
+                {start - m_begin, m_current - m_begin}, std::string_view{start, m_current});
+    }
+
+    return token{
+            syntax_kind::character_constant_token,
+            source_span{start - m_begin, m_current - m_begin},
+            std::string{start, m_current},
+    };
+}
+
 cc::syntax_kind cc::lexer::iterator::recognize_keyword(std::string_view text) const noexcept {
     static const std::unordered_map<std::string_view, syntax_kind> keywords = {
             {"auto", syntax_kind::auto_token},
@@ -384,9 +446,10 @@ char cc::lexer::iterator::current() const noexcept {
     return *m_current;
 }
 
-cc::lexer::iterator::iterator(
-        std::string::const_iterator begin, std::string::const_iterator end) noexcept
-    : m_begin(begin), m_current(begin), m_end(end), m_is_end(false), m_just_scanned(scan_token()) {}
+cc::lexer::iterator::iterator(std::string::const_iterator begin, std::string::const_iterator end,
+        diagnostic_bag* diagnostics) noexcept
+    : m_begin(begin), m_current(begin), m_end(end), m_diagnostics(diagnostics), m_is_end(false),
+      m_just_scanned(scan_token()) {}
 
 cc::lexer::iterator::iterator() : m_is_end(true) {}
 

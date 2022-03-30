@@ -1,5 +1,6 @@
 #pragma once
 
+#include "fmt/core.h"
 #include "source_span.hpp"
 #include "syntax_kind.hpp"
 
@@ -20,3 +21,13 @@ struct token final {
 };
 
 } // namespace cc
+
+template <> struct fmt::formatter<cc::token> {
+    template <typename ParseContext> constexpr auto parse(ParseContext& ctx) {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext> auto format(const cc::token& tok, FormatContext& ctx) {
+        return format_to(ctx.out(), "{} '{}'", tok.kind, tok.text);
+    }
+};

@@ -1,5 +1,6 @@
 #include "cparser/lexer.hpp"
 #include "cparser/token.hpp"
+#include "fmt/core.h"
 
 #include <iostream>
 #include <string>
@@ -13,7 +14,10 @@ int main() {
 
         cc::lexer lexer{std::move(line)};
         for (cc::token tok : lexer) {
-            std::cout << tok << '\n';
+            fmt::print("{}\n", tok);
+        }
+        for (const auto& diag : lexer.diagnostics()) {
+            fmt::print("{}: {}\n", diag.span, diag);
         }
     }
 }
