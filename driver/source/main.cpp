@@ -33,8 +33,15 @@ int main(int argc, char** argv) {
                 std::ostreambuf_iterator{buffer});
 
         auto lexer = cc::lexer{buffer.str()};
-        for (auto token : lexer) {
-            fmt::print("{}\n", token);
+        std::vector<cc::token> tokens;
+        std::ranges::copy(lexer, std::back_inserter(tokens));
+        for (const auto& diag : lexer.diagnostics()) {
+            fmt::print("{}\n", diag);
+        }
+        if (lexer.diagnostics().empty()) {
+            for (const auto& tok : tokens) {
+                fmt::print("{}\n", tok);
+            }
         }
         return 0;
     }
