@@ -53,7 +53,7 @@ cpr::token cpr::lexer::iterator::scan_token() noexcept {
             m_current += 1;
             break;
         case '.':
-            if (look() != m_end && look(2) != m_end && *look() == '.' && *look(2) == '.') {
+            if (look() == '.' && look(2) == '.') {
                 kind = syntax_kind::ellipsis_token;
                 m_current += 3;
             } else {
@@ -62,13 +62,13 @@ cpr::token cpr::lexer::iterator::scan_token() noexcept {
             }
             break;
         case '-':
-            if (look() != m_end && *look() == '>') {
+            if (look() == '>') {
                 kind = syntax_kind::arrow_token;
                 m_current += 2;
-            } else if (look() != m_end && *look() == '-') {
+            } else if (look() == '-') {
                 kind = syntax_kind::minus_minus_token;
                 m_current += 2;
-            } else if (look() != m_end && *look() == '=') {
+            } else if (look() == '=') {
                 kind = syntax_kind::minus_equals_token;
                 m_current += 2;
             } else {
@@ -77,10 +77,10 @@ cpr::token cpr::lexer::iterator::scan_token() noexcept {
             }
             break;
         case '+':
-            if (look() != m_end && *look() == '+') {
+            if (look() == '+') {
                 kind = syntax_kind::plus_plus_token;
                 m_current += 2;
-            } else if (look() != m_end && *look() == '=') {
+            } else if (look() == '=') {
                 kind = syntax_kind::plus_equals_token;
                 m_current += 2;
             } else {
@@ -89,10 +89,10 @@ cpr::token cpr::lexer::iterator::scan_token() noexcept {
             }
             break;
         case '&':
-            if (look() != m_end && *look() == '&') {
+            if (look() == '&') {
                 kind = syntax_kind::ampersand_ampersand_token;
                 m_current += 2;
-            } else if (look() != m_end && *look() == '=') {
+            } else if (look() == '=') {
                 kind = syntax_kind::ampersand_equals_token;
                 m_current += 2;
             } else {
@@ -101,7 +101,7 @@ cpr::token cpr::lexer::iterator::scan_token() noexcept {
             }
             break;
         case '*':
-            if (look() != m_end && *look() == '=') {
+            if (look() == '=') {
                 kind = syntax_kind::asterisk_equals_token;
                 m_current += 2;
             } else {
@@ -114,7 +114,7 @@ cpr::token cpr::lexer::iterator::scan_token() noexcept {
             m_current += 1;
             break;
         case '!':
-            if (look() != m_end && *look() == '=') {
+            if (look() == '=') {
                 kind = syntax_kind::exclamation_equals_token;
                 m_current += 2;
             } else {
@@ -123,10 +123,10 @@ cpr::token cpr::lexer::iterator::scan_token() noexcept {
             }
             break;
         case '/':
-            if (look() != m_end && *look() == '=') {
+            if (look() == '=') {
                 kind = syntax_kind::slash_equals_token;
                 m_current += 2;
-            } else if (look() != m_end && *look() == '*') {
+            } else if (look() == '*') {
                 return scan_comment();
             } else {
                 kind = syntax_kind::slash_token;
@@ -134,7 +134,7 @@ cpr::token cpr::lexer::iterator::scan_token() noexcept {
             }
             break;
         case '%':
-            if (look() != m_end && *look() == '=') {
+            if (look() == '=') {
                 kind = syntax_kind::percent_equals_token;
                 m_current += 2;
             } else {
@@ -143,11 +143,11 @@ cpr::token cpr::lexer::iterator::scan_token() noexcept {
             }
             break;
         case '<':
-            if (look() != m_end && *look() == '=') {
+            if (look() == '=') {
                 kind = syntax_kind::left_equals_token;
                 m_current += 2;
-            } else if (look() != m_end && *look() == '<') {
-                if (look(2) != m_end && *look(2) == '=') {
+            } else if (look() == '<') {
+                if (look(2) == '=') {
                     kind = syntax_kind::left_left_equals_token;
                     m_current += 3;
                 } else {
@@ -160,11 +160,11 @@ cpr::token cpr::lexer::iterator::scan_token() noexcept {
             }
             break;
         case '>':
-            if (look() != m_end && *look() == '=') {
+            if (look() == '=') {
                 kind = syntax_kind::right_equals_token;
                 m_current += 2;
-            } else if (look() != m_end && *look() == '>') {
-                if (look(2) != m_end && *look(2) == '=') {
+            } else if (look() == '>') {
+                if (look(2) == '=') {
                     kind = syntax_kind::right_right_equals_token;
                     m_current += 3;
                 } else {
@@ -177,7 +177,7 @@ cpr::token cpr::lexer::iterator::scan_token() noexcept {
             }
             break;
         case '=':
-            if (look() != m_end && *look() == '=') {
+            if (look() == '=') {
                 kind = syntax_kind::equals_equals_token;
                 m_current += 2;
             } else {
@@ -186,7 +186,7 @@ cpr::token cpr::lexer::iterator::scan_token() noexcept {
             }
             break;
         case '^':
-            if (look() != m_end && *look() == '=') {
+            if (look() == '=') {
                 kind = syntax_kind::caret_equals_token;
                 m_current += 2;
             } else {
@@ -195,10 +195,10 @@ cpr::token cpr::lexer::iterator::scan_token() noexcept {
             }
             break;
         case '|':
-            if (look() != m_end && *look() == '|') {
+            if (look() == '|') {
                 kind = syntax_kind::pipe_pipe_token;
                 m_current += 2;
-            } else if (look() != m_end && *look() == '=') {
+            } else if (look() == '=') {
                 kind = syntax_kind::pipe_equals_token;
                 m_current += 2;
             } else {
@@ -219,7 +219,7 @@ cpr::token cpr::lexer::iterator::scan_token() noexcept {
             m_current += 1;
             break;
         case '#':
-            if (look() != m_end && *look() == '#') {
+            if (look() == '#') {
                 kind = syntax_kind::hash_hash_token;
                 m_current += 2;
             } else {
@@ -268,7 +268,7 @@ cpr::token cpr::lexer::iterator::scan_token() noexcept {
 cpr::token cpr::lexer::iterator::scan_comment() noexcept {
     auto start = m_current;
     while (true) {
-        if (m_current == m_end || (*m_current == '*' && look() != m_end && *look() == '/')) {
+        if (current() == '*' && look() == '/') {
             m_current += 2;
             return token{
                     syntax_kind::comment_token,
@@ -284,7 +284,7 @@ cpr::token cpr::lexer::iterator::scan_comment() noexcept {
 cpr::token cpr::lexer::iterator::scan_identifier() noexcept {
     auto start = m_current;
     while (true) {
-        if (m_current == m_end || (!std::isalnum(*m_current) && *m_current != '_')) {
+        if (!std::isalnum(current()) && current() != '_') {
             return token{
                     recognize_keyword(std::string_view{start, m_current}),
                     source_span{start - m_begin, m_current - m_begin},
@@ -300,7 +300,7 @@ cpr::token cpr::lexer::iterator::scan_number() noexcept {
     // TODO(kyle): no FP number support here
     auto start = m_current;
     while (true) {
-        if (m_current == m_end || !std::isdigit(*m_current)) {
+        if (!std::isdigit(current())) {
             return token{
                     syntax_kind::integer_constant_token,
                     source_span{start - m_begin, m_current - m_begin},
@@ -355,8 +355,20 @@ cpr::syntax_kind cpr::lexer::iterator::recognize_keyword(std::string_view text) 
     return syntax_kind::identifier_token;
 }
 
-std::string::const_iterator cpr::lexer::iterator::look(std::ptrdiff_t offset) const noexcept {
-    return m_current + offset;
+char cpr::lexer::iterator::look(std::ptrdiff_t offset) const noexcept {
+    auto it = m_current + offset;
+    if (it >= m_end) {
+        return '\0';
+    }
+
+    return *it;
+}
+
+char cpr::lexer::iterator::current() const noexcept {
+    if (m_current == m_end) {
+        return '\0';
+    }
+    return *m_current;
 }
 
 cpr::lexer::iterator::iterator(
