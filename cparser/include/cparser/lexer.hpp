@@ -25,6 +25,7 @@ class lexer final {
         std::string::const_iterator m_current;
         std::string::const_iterator m_end;
         diagnostic_bag* m_diagnostics;
+        bool m_reported_diagnostic;
         bool m_is_end;
         token m_just_scanned;
 

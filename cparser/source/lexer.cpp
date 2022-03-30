@@ -40,6 +40,7 @@ cc::token cc::lexer::iterator::scan_token() noexcept {
 
     auto kind = syntax_kind::bad_token;
     m_token_start = m_current;
+    m_reported_diagnostic = false;
 
     switch (*m_current) {
         case '[':
@@ -264,6 +265,7 @@ cc::token cc::lexer::iterator::scan_token() noexcept {
 
     if (kind == syntax_kind::bad_token) {
         m_diagnostics->report_illegal_character(m_current - m_begin, current());
+        m_reported_diagnostic = true;
         advance();
     }
 
@@ -365,6 +367,7 @@ void cc::lexer::iterator::scan_escape_sequence() noexcept {
             break;
         default:
             m_diagnostics->report_illegal_escape(m_current - m_begin - 1, current());
+            m_reported_diagnostic = true;
             advance();
             break;
     }
@@ -377,11 +380,7 @@ cc::token cc::lexer::iterator::scan_character_literal() noexcept {
         scan_escape_sequence();
     } else if (current() == '\n' || current() == '\0') {
         m_diagnostics->report_unterminated_character_literal(current_span(), current_text());
-        return token{
-                syntax_kind::bad_token,
-                current_span(),
-                std::string{current_text()},
-        };
+        m_reported_diagnostic = true;
     } else {
         advance();
     }
@@ -390,15 +389,11 @@ cc::token cc::lexer::iterator::scan_character_literal() noexcept {
         advance();
     } else {
         m_diagnostics->report_unterminated_character_literal(current_span(), current_text());
-        return token{
-                syntax_kind::bad_token,
-                current_span(),
-                std::string{current_text()},
-        };
+        m_reported_diagnostic = true;
     }
 
     return token{
-            syntax_kind::character_constant_token,
+            m_reported_diagnostic ? syntax_kind::bad_token : syntax_kind::character_constant_token,
             current_span(),
             std::string{current_text()},
     };
@@ -473,8 +468,8 @@ std::string_view cc::lexer::iterator::current_text() const noexcept {
 
 cc::lexer::iterator::iterator(std::string::const_iterator begin, std::string::const_iterator end,
         diagnostic_bag* diagnostics) noexcept
-    : m_begin(begin), m_current(begin), m_end(end), m_diagnostics(diagnostics), m_is_end(false),
-      m_just_scanned(scan_token()) {}
+    : m_begin(begin), m_current(begin), m_end(end), m_diagnostics(diagnostics),
+      m_reported_diagnostic(false), m_is_end(false), m_just_scanned(scan_token()) {}
 
 cc::lexer::iterator::iterator() : m_is_end(true) {}
 
