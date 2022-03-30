@@ -39,7 +39,7 @@ cc::token cc::lexer::iterator::scan_token() noexcept {
     }
 
     auto kind = syntax_kind::bad_token;
-    auto start = m_current;
+    m_token_start = m_current;
 
     switch (*m_current) {
         case '[':
@@ -269,20 +269,19 @@ cc::token cc::lexer::iterator::scan_token() noexcept {
 
     return token{
             kind,
-            current_span(start),
-            std::string{current_text(start)},
+            current_span(),
+            std::string{current_text()},
     };
 }
 
 cc::token cc::lexer::iterator::scan_comment() noexcept {
-    auto start = m_current;
     while (true) {
         if (current() == '*' && look() == '/') {
             advance(2);
             return token{
                     syntax_kind::comment_token,
-                    current_span(start),
-                    std::string{current_text(start)},
+                    current_span(),
+                    std::string{current_text()},
             };
         }
 
@@ -296,8 +295,8 @@ cc::token cc::lexer::iterator::scan_identifier() noexcept {
         if (!std::isalnum(current()) && current() != '_') {
             return token{
                     recognize_keyword(std::string_view{start, m_current}),
-                    current_span(start),
-                    std::string{current_text(start)},
+                    current_span(),
+                    std::string{current_text()},
             };
         }
 
@@ -307,7 +306,6 @@ cc::token cc::lexer::iterator::scan_identifier() noexcept {
 
 cc::token cc::lexer::iterator::scan_number() noexcept {
     // TODO(kyle): no FP number support here
-    auto start = m_current;
     auto kind = syntax_kind::decimal_constant_token;
 
     if (current() == '0') {
@@ -332,55 +330,57 @@ cc::token cc::lexer::iterator::scan_number() noexcept {
 
     return token{
             kind,
-            current_span(start),
-            std::string{current_text(start)},
+            current_span(),
+            std::string{current_text()},
     };
 }
 
+void cc::lexer::iterator::scan_escape_sequence() noexcept {
+    advance();
+    switch (current()) {
+        case '\'':
+        case '"':
+        case '?':
+        case '\\':
+        case 'a':
+        case 'b':
+        case 'f':
+        case 'n':
+        case 'r':
+        case 't':
+        case 'v':
+            advance();
+            break;
+        case '0':
+            advance();
+            for (std::size_t i = 0; i < 2 && current() >= '0' && current() <= '7'; ++i) {
+                advance();
+            }
+            break;
+        case 'x':
+            advance();
+            while (std::isxdigit(current())) {
+                advance();
+            }
+            break;
+        default:
+            m_diagnostics->report_illegal_escape(m_current - m_begin - 1, current());
+            advance();
+            break;
+    }
+}
+
 cc::token cc::lexer::iterator::scan_character_literal() noexcept {
-    auto start = m_current;
     advance();
 
     if (current() == '\\') {
-        advance();
-        switch (current()) {
-            case '\'':
-            case '"':
-            case '?':
-            case '\\':
-            case 'a':
-            case 'b':
-            case 'f':
-            case 'n':
-            case 'r':
-            case 't':
-            case 'v':
-                advance();
-                break;
-            case '0':
-                advance();
-                for (std::size_t i = 0; i < 2 && current() >= '0' && current() <= '7'; ++i) {
-                    advance();
-                }
-                break;
-            case 'x':
-                advance();
-                while (std::isxdigit(current())) {
-                    advance();
-                }
-                break;
-            default:
-                m_diagnostics->report_illegal_escape(m_current - m_begin - 1, current());
-                advance();
-                break;
-        }
+        scan_escape_sequence();
     } else if (current() == '\n' || current() == '\0') {
-        m_diagnostics->report_unterminated_character_literal(
-                current_span(start), current_text(start));
+        m_diagnostics->report_unterminated_character_literal(current_span(), current_text());
         return token{
                 syntax_kind::bad_token,
-                current_span(start),
-                std::string{current_text(start)},
+                current_span(),
+                std::string{current_text()},
         };
     } else {
         advance();
@@ -389,19 +389,18 @@ cc::token cc::lexer::iterator::scan_character_literal() noexcept {
     if (current() == '\'') {
         advance();
     } else {
-        m_diagnostics->report_unterminated_character_literal(
-                current_span(start), current_text(start));
+        m_diagnostics->report_unterminated_character_literal(current_span(), current_text());
         return token{
                 syntax_kind::bad_token,
-                current_span(start),
-                std::string{current_text(start)},
+                current_span(),
+                std::string{current_text()},
         };
     }
 
     return token{
             syntax_kind::character_constant_token,
-            current_span(start),
-            std::string{current_text(start)},
+            current_span(),
+            std::string{current_text()},
     };
 }
 
@@ -464,14 +463,12 @@ char cc::lexer::iterator::current() const noexcept {
     return *m_current;
 }
 
-cc::source_span cc::lexer::iterator::current_span(
-        std::string::const_iterator start) const noexcept {
-    return source_span{start - m_begin, m_current - m_begin};
+cc::source_span cc::lexer::iterator::current_span() const noexcept {
+    return source_span{m_token_start - m_begin, m_current - m_begin};
 }
 
-std::string_view cc::lexer::iterator::current_text(
-        std::string::const_iterator start) const noexcept {
-    return std::string_view{start, m_current};
+std::string_view cc::lexer::iterator::current_text() const noexcept {
+    return std::string_view{m_token_start, m_current};
 }
 
 cc::lexer::iterator::iterator(std::string::const_iterator begin, std::string::const_iterator end,

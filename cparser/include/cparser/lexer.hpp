@@ -21,6 +21,7 @@ class lexer final {
   public:
     class iterator {
         std::string::const_iterator m_begin;
+        std::string::const_iterator m_token_start;
         std::string::const_iterator m_current;
         std::string::const_iterator m_end;
         diagnostic_bag* m_diagnostics;
@@ -32,11 +33,12 @@ class lexer final {
         token scan_identifier() noexcept;
         token scan_number() noexcept;
         token scan_character_literal() noexcept;
+        void scan_escape_sequence() noexcept;
         syntax_kind recognize_keyword(std::string_view text) const noexcept;
         char look(std::ptrdiff_t offset = 1) const noexcept;
         char current() const noexcept;
-        source_span current_span(std::string::const_iterator start) const noexcept;
-        std::string_view current_text(std::string::const_iterator start) const noexcept;
+        source_span current_span() const noexcept;
+        std::string_view current_text() const noexcept;
         void advance(std::ptrdiff_t count = 1) noexcept;
 
       public:
