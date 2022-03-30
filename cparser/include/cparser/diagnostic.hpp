@@ -24,6 +24,6 @@ template <> struct fmt::formatter<cc::diagnostic> {
     }
 
     template <typename FormatContext> auto format(const cc::diagnostic& diag, FormatContext& ctx) {
-        return format_to(ctx.out(), "{}", diag.message);
+        return format_to(ctx.out(), "{}: {}", diag.span, diag.message);
     }
 };

@@ -19,7 +19,10 @@ int main() {
         std::vector<cc::token> tokens;
         std::ranges::copy(lexer, std::back_inserter(tokens));
         for (const auto& diag : lexer.diagnostics()) {
-            fmt::print("{}: {}\n", diag.span, diag);
+            fmt::print("{}\n", diag);
+        }
+        for (const auto& tok : tokens) {
+            fmt::print("{}\n", tok);
         }
     }
 }
