@@ -3,12 +3,42 @@
 #include "fmt/core.h"
 
 #include <algorithm>
+#include <cstddef>
+#include <cstdio>
+#include <fstream>
 #include <iostream>
 #include <ranges>
+#include <span>
+#include <sstream>
 #include <string>
 #include <vector>
 
-int main() {
+int main(int argc, char** argv) {
+    std::span args{argv, static_cast<std::size_t>(argc)};
+
+    if (args.size() > 2) {
+        fmt::print(stderr, "Usage: {} [file]\n", args[0]);
+        return 1;
+    }
+
+    if (args.size() == 2) {
+        std::ifstream file{args[1]};
+        if (!file) {
+            fmt::print(stderr, "Failed to open file: {}\n", args[1]);
+            return 1;
+        }
+
+        std::ostringstream buffer;
+        std::copy(std::istreambuf_iterator{file}, std::istreambuf_iterator<char>{},
+                std::ostreambuf_iterator{buffer});
+
+        auto lexer = cc::lexer{buffer.str()};
+        for (auto token : lexer) {
+            fmt::print("{}\n", token);
+        }
+        return 0;
+    }
+
     std::string line;
     while (true) {
         if (!std::getline(std::cin, line)) {
