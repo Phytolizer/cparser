@@ -4,6 +4,7 @@
 #include "cparser/syntax_kind.hpp"
 #include "cparser/token.hpp"
 
+#include <cstddef>
 #include <iterator>
 #include <optional>
 #include <string>
@@ -262,8 +263,7 @@ void cpr::lexer::iterator::scan_comment() noexcept {
     }
 }
 
-std::string::const_iterator cpr::lexer::iterator::look(
-        std::string::const_iterator::difference_type offset) const noexcept {
+std::string::const_iterator cpr::lexer::iterator::look(std::ptrdiff_t offset) const noexcept {
     return m_current + offset;
 }
 

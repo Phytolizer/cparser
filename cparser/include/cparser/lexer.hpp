@@ -22,8 +22,7 @@ class lexer final {
 
         token scan_token() noexcept;
         void scan_comment() noexcept;
-        std::string::const_iterator look(
-                std::string::const_iterator::difference_type offset = 1) const noexcept;
+        std::string::const_iterator look(std::ptrdiff_t offset = 1) const noexcept;
 
       public:
         using iterator_category = std::input_iterator_tag;
