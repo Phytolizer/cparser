@@ -415,7 +415,7 @@ cc::token cc::lexer::iterator::scan_string_literal() noexcept {
             m_diagnostics->report_unterminated_string_literal(current_span(), current_text());
             m_reported_diagnostic = true;
             break;
-        } else {
+        } else if (current() != '"') {
             advance();
         }
 
