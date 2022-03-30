@@ -38,211 +38,211 @@ cc::token cc::lexer::iterator::scan_token() noexcept {
     switch (*m_current) {
         case '[':
             kind = syntax_kind::left_bracket_token;
-            m_current += 1;
+            advance();
             break;
         case ']':
             kind = syntax_kind::right_bracket_token;
-            m_current += 1;
+            advance();
             break;
         case '(':
             kind = syntax_kind::left_parenthesis_token;
-            m_current += 1;
+            advance();
             break;
         case ')':
             kind = syntax_kind::right_parenthesis_token;
-            m_current += 1;
+            advance();
             break;
         case '.':
             if (look() == '.' && look(2) == '.') {
                 kind = syntax_kind::ellipsis_token;
-                m_current += 3;
+                advance(3);
             } else {
                 kind = syntax_kind::period_token;
-                m_current += 1;
+                advance();
             }
             break;
         case '-':
             if (look() == '>') {
                 kind = syntax_kind::arrow_token;
-                m_current += 2;
+                advance(2);
             } else if (look() == '-') {
                 kind = syntax_kind::minus_minus_token;
-                m_current += 2;
+                advance(2);
             } else if (look() == '=') {
                 kind = syntax_kind::minus_equals_token;
-                m_current += 2;
+                advance(2);
             } else {
                 kind = syntax_kind::minus_token;
-                m_current += 1;
+                advance();
             }
             break;
         case '+':
             if (look() == '+') {
                 kind = syntax_kind::plus_plus_token;
-                m_current += 2;
+                advance(2);
             } else if (look() == '=') {
                 kind = syntax_kind::plus_equals_token;
-                m_current += 2;
+                advance(2);
             } else {
                 kind = syntax_kind::plus_token;
-                m_current += 1;
+                advance();
             }
             break;
         case '&':
             if (look() == '&') {
                 kind = syntax_kind::ampersand_ampersand_token;
-                m_current += 2;
+                advance(2);
             } else if (look() == '=') {
                 kind = syntax_kind::ampersand_equals_token;
-                m_current += 2;
+                advance(2);
             } else {
                 kind = syntax_kind::ampersand_token;
-                m_current += 1;
+                advance();
             }
             break;
         case '*':
             if (look() == '=') {
                 kind = syntax_kind::asterisk_equals_token;
-                m_current += 2;
+                advance(2);
             } else {
                 kind = syntax_kind::asterisk_token;
-                m_current += 1;
+                advance();
             }
             break;
         case '~':
             kind = syntax_kind::tilde_token;
-            m_current += 1;
+            advance();
             break;
         case '!':
             if (look() == '=') {
                 kind = syntax_kind::exclamation_equals_token;
-                m_current += 2;
+                advance(2);
             } else {
                 kind = syntax_kind::exclamation_token;
-                m_current += 1;
+                advance();
             }
             break;
         case '/':
             if (look() == '=') {
                 kind = syntax_kind::slash_equals_token;
-                m_current += 2;
+                advance(2);
             } else if (look() == '*') {
                 return scan_comment();
             } else {
                 kind = syntax_kind::slash_token;
-                m_current += 1;
+                advance();
             }
             break;
         case '%':
             if (look() == '=') {
                 kind = syntax_kind::percent_equals_token;
-                m_current += 2;
+                advance(2);
             } else {
                 kind = syntax_kind::percent_token;
-                m_current += 1;
+                advance();
             }
             break;
         case '<':
             if (look() == '=') {
                 kind = syntax_kind::left_equals_token;
-                m_current += 2;
+                advance(2);
             } else if (look() == '<') {
                 if (look(2) == '=') {
                     kind = syntax_kind::left_left_equals_token;
-                    m_current += 3;
+                    advance(3);
                 } else {
                     kind = syntax_kind::left_left_token;
-                    m_current += 2;
+                    advance(2);
                 }
             } else {
                 kind = syntax_kind::left_token;
-                m_current += 1;
+                advance();
             }
             break;
         case '>':
             if (look() == '=') {
                 kind = syntax_kind::right_equals_token;
-                m_current += 2;
+                advance(2);
             } else if (look() == '>') {
                 if (look(2) == '=') {
                     kind = syntax_kind::right_right_equals_token;
-                    m_current += 3;
+                    advance(3);
                 } else {
                     kind = syntax_kind::right_right_token;
-                    m_current += 2;
+                    advance(2);
                 }
             } else {
                 kind = syntax_kind::right_token;
-                m_current += 1;
+                advance();
             }
             break;
         case '=':
             if (look() == '=') {
                 kind = syntax_kind::equals_equals_token;
-                m_current += 2;
+                advance(2);
             } else {
                 kind = syntax_kind::equals_token;
-                m_current += 1;
+                advance();
             }
             break;
         case '^':
             if (look() == '=') {
                 kind = syntax_kind::caret_equals_token;
-                m_current += 2;
+                advance(2);
             } else {
                 kind = syntax_kind::caret_token;
-                m_current += 1;
+                advance();
             }
             break;
         case '|':
             if (look() == '|') {
                 kind = syntax_kind::pipe_pipe_token;
-                m_current += 2;
+                advance(2);
             } else if (look() == '=') {
                 kind = syntax_kind::pipe_equals_token;
-                m_current += 2;
+                advance(2);
             } else {
                 kind = syntax_kind::pipe_token;
-                m_current += 1;
+                advance();
             }
             break;
         case '?':
             kind = syntax_kind::question_token;
-            m_current += 1;
+            advance();
             break;
         case ':':
             kind = syntax_kind::colon_token;
-            m_current += 1;
+            advance();
             break;
         case ',':
             kind = syntax_kind::comma_token;
-            m_current += 1;
+            advance();
             break;
         case '#':
             if (look() == '#') {
                 kind = syntax_kind::hash_hash_token;
-                m_current += 2;
+                advance(2);
             } else {
                 kind = syntax_kind::hash_token;
-                m_current += 1;
+                advance();
             }
             break;
         case '{':
             kind = syntax_kind::left_brace_token;
-            m_current += 1;
+            advance();
             break;
         case '}':
             kind = syntax_kind::right_brace_token;
-            m_current += 1;
+            advance();
             break;
         case ';':
             kind = syntax_kind::semicolon_token;
-            m_current += 1;
+            advance();
             break;
         default:
             if (std::isspace(*m_current)) {
                 while (std::isspace(*m_current)) {
-                    m_current += 1;
+                    advance();
                 }
 
                 kind = syntax_kind::whitespace_token;
@@ -255,7 +255,7 @@ cc::token cc::lexer::iterator::scan_token() noexcept {
     }
 
     if (kind == syntax_kind::bad_token) {
-        m_current += 1;
+        advance();
     }
 
     return token{
@@ -269,7 +269,7 @@ cc::token cc::lexer::iterator::scan_comment() noexcept {
     auto start = m_current;
     while (true) {
         if (current() == '*' && look() == '/') {
-            m_current += 2;
+            advance(2);
             return token{
                     syntax_kind::comment_token,
                     source_span{start - m_begin, m_current - m_begin},
@@ -277,7 +277,7 @@ cc::token cc::lexer::iterator::scan_comment() noexcept {
             };
         }
 
-        m_current += 1;
+        advance();
     }
 }
 
@@ -292,7 +292,7 @@ cc::token cc::lexer::iterator::scan_identifier() noexcept {
             };
         }
 
-        m_current += 1;
+        advance();
     }
 }
 
@@ -308,7 +308,7 @@ cc::token cc::lexer::iterator::scan_number() noexcept {
             };
         }
 
-        m_current += 1;
+        advance();
     }
 }
 
@@ -402,4 +402,8 @@ cc::lexer::iterator cc::lexer::iterator::operator++(int) noexcept {
 
 cc::token cc::lexer::iterator::operator*() const noexcept {
     return m_just_scanned;
+}
+
+void cc::lexer::iterator::advance(std::ptrdiff_t count) noexcept {
+    m_current += count;
 }
