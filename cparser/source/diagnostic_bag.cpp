@@ -18,6 +18,11 @@ void cc::diagnostic_bag::report_unterminated_character_literal(
     report(span, fmt::format("Character literal is unterminated: '{}'", text));
 }
 
+void cc::diagnostic_bag::report_unterminated_string_literal(
+        source_span span, std::string_view text) noexcept {
+    report(span, fmt::format("String literal is unterminated: '{}'", text));
+}
+
 void cc::diagnostic_bag::report_illegal_character(std::ptrdiff_t index, char character) noexcept {
     report(source_span::with_length(index, 1), fmt::format("Illegal character: '{}'", character));
 }

@@ -34,6 +34,7 @@ class lexer final {
         token scan_identifier() noexcept;
         token scan_number() noexcept;
         token scan_character_literal() noexcept;
+        token scan_string_literal() noexcept;
         void scan_escape_sequence() noexcept;
         syntax_kind recognize_keyword(std::string_view text) const noexcept;
         char look(std::ptrdiff_t offset = 1) const noexcept;

@@ -18,6 +18,7 @@ class diagnostic_bag final {
     diagnostic_bag() = default;
 
     void report_unterminated_character_literal(source_span span, std::string_view text) noexcept;
+    void report_unterminated_string_literal(source_span span, std::string_view text) noexcept;
     void report_illegal_character(std::ptrdiff_t index, char character) noexcept;
     void report_illegal_escape(std::ptrdiff_t index, char character) noexcept;
 

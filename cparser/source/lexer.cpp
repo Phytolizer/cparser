@@ -248,6 +248,8 @@ cc::token cc::lexer::iterator::scan_token() noexcept {
             break;
         case '\'':
             return scan_character_literal();
+        case '"':
+            return scan_string_literal();
         default:
             if (std::isspace(*m_current)) {
                 while (std::isspace(*m_current)) {
@@ -394,6 +396,33 @@ cc::token cc::lexer::iterator::scan_character_literal() noexcept {
 
     return token{
             m_reported_diagnostic ? syntax_kind::bad_token : syntax_kind::character_constant_token,
+            current_span(),
+            std::string{current_text()},
+    };
+}
+
+cc::token cc::lexer::iterator::scan_string_literal() noexcept {
+    advance();
+
+    while (true) {
+        if (current() == '\\') {
+            scan_escape_sequence();
+        } else if (current() == '\n' || current() == '\0') {
+            m_diagnostics->report_unterminated_string_literal(current_span(), current_text());
+            m_reported_diagnostic = true;
+            break;
+        } else {
+            advance();
+        }
+
+        if (current() == '"') {
+            advance();
+            break;
+        }
+    }
+
+    return token{
+            m_reported_diagnostic ? syntax_kind::bad_token : syntax_kind::string_literal_token,
             current_span(),
             std::string{current_text()},
     };
