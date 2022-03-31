@@ -429,6 +429,13 @@ void cc::lexer::iterator::scan_escape_sequence() noexcept {
             advance();
             break;
         case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
             advance();
             for (std::size_t i = 0; i < 2 && current() >= '0' && current() <= '7'; ++i) {
                 advance();
