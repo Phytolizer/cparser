@@ -309,26 +309,51 @@ cc::token cc::lexer::iterator::scan_identifier() noexcept {
 }
 
 cc::token cc::lexer::iterator::scan_number() noexcept {
-    // TODO(kyle): no FP number support here
     auto kind = syntax_kind::decimal_constant_token;
 
-    if (current() == '0') {
+    while (current() >= '0' && current() <= '9') {
         advance();
-        if (current() == 'x' || current() == 'X') {
-            kind = syntax_kind::hexadecimal_constant_token;
+    }
+    // try scan floating point
+    if (current() == '.' || current() == 'e' || current() == 'E') {
+        // success
+        kind = syntax_kind::floating_constant_token;
+        if (current() == 'e' || current() == 'E') {
             advance();
-            while (std::isxdigit(current())) {
+            if (current() == '+' || current() == '-') {
                 advance();
             }
         } else {
-            kind = syntax_kind::octal_constant_token;
-            while (current() >= '0' && current() <= '7') {
-                advance();
-            }
+            advance();
+        }
+        while (current() >= '0' && current() <= '9') {
+            advance();
+        }
+        if (current() == 'f' || current() == 'F' || current() == 'l' || current() == 'L') {
+            advance();
         }
     } else {
-        while (std::isdigit(current())) {
+        // try scan integer
+        m_current = m_token_start;
+
+        if (current() == '0') {
             advance();
+            if (current() == 'x' || current() == 'X') {
+                kind = syntax_kind::hexadecimal_constant_token;
+                advance();
+                while (std::isxdigit(current())) {
+                    advance();
+                }
+            } else {
+                kind = syntax_kind::octal_constant_token;
+                while (current() >= '0' && current() <= '7') {
+                    advance();
+                }
+            }
+        } else {
+            while (std::isdigit(current())) {
+                advance();
+            }
         }
     }
 
