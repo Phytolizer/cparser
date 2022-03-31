@@ -63,6 +63,8 @@ cc::token cc::lexer::iterator::scan_token() noexcept {
             if (look() == '.' && look(2) == '.') {
                 kind = syntax_kind::ellipsis_token;
                 advance(3);
+            } else if (look() >= '0' && look() <= '9') {
+                return scan_number();
             } else {
                 kind = syntax_kind::period_token;
                 advance();
