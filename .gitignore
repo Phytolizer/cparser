@@ -3,3 +3,4 @@
 /.cache/
 /CMakeUserPresets.json
 *_preprocessed.c
+/.vscode/

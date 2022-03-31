@@ -50,8 +50,12 @@ int main(int argc, char** argv) {
 
         cc::parser parser{std::move(line)};
         auto expression = parser.parse();
-        for (const auto& diagnostic : parser.diagnostics()) {
+        auto diagnostics = parser.diagnostics();
+        for (const auto& diagnostic : diagnostics) {
             fmt::print(stderr, "{}\n", diagnostic);
+        }
+        if (diagnostics.empty()) {
+            expression->pretty_print();
         }
     }
 }

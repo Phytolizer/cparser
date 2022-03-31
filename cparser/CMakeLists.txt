@@ -13,6 +13,7 @@ add_library(
     "source/lexer.cpp"
     "source/parser.cpp"
     "source/peek_buffer.cpp"
+    "source/syntax_node.cpp"
     "source/token.cpp"
 )
 target_include_directories("cparser" PUBLIC "include")

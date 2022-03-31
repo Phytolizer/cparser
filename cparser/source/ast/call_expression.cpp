@@ -3,6 +3,8 @@
 
 #include "cparser/syntax_node.hpp"
 
+#include <cstddef>
+
 cc::ast::call_expression::call_expression(std::unique_ptr<expression> callee,
         token&& open_parenthesis_token, separated_syntax_list<expression> arguments,
         token&& close_parenthesis_token) noexcept
@@ -16,8 +18,11 @@ std::vector<const cc::syntax_node*> cc::ast::call_expression::children() const n
     std::vector<const syntax_node*> result;
     result.push_back(m_callee.get());
     result.push_back(&m_open_parenthesis_token);
-    for (const auto& arg : m_arguments) {
-        result.push_back(&arg);
+    for (std::size_t i = 0; i < m_arguments.count(); i++) {
+        result.push_back(&m_arguments[i]);
+        if (i < m_arguments.count() - 1) {
+            result.push_back(&m_arguments.get_separator(i));
+        }
     }
     result.push_back(&m_close_parenthesis_token);
     return result;

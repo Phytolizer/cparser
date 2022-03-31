@@ -40,7 +40,12 @@ class separated_syntax_list final {
         using difference_type = std::ptrdiff_t;
         using iterator_category = std::random_access_iterator_tag;
 
-        explicit iterator(const separated_syntax_list<T>* list) noexcept : m_list(list) {}
+        explicit iterator(const separated_syntax_list<T>* list) noexcept
+            : m_list(list), m_index(0) {
+            if (m_list->count() == 0) {
+                m_list = nullptr;
+            }
+        }
         iterator() : m_list(nullptr) {}
 
         const value_type& operator*() const {
