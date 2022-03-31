@@ -3,6 +3,8 @@
 #include "cparser/ast/expression.hpp"
 #include "cparser/token.hpp"
 
+#include <memory>
+
 namespace cc::ast {
 
 class decrement_expression final : public expression {

@@ -2,6 +2,9 @@
 
 #include "cparser/ast/expression.hpp"
 #include "cparser/token.hpp"
+
+#include <memory>
+
 namespace cc::ast {
 
 class increment_expression final : public expression {
