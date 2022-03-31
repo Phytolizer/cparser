@@ -35,8 +35,7 @@ int main(int argc, char** argv) {
 
         auto parser = cc::parser{buffer.str()};
         auto expression = parser.parse();
-        auto diagnostics = parser.diagnostics();
-        for (auto diagnostic : diagnostics) {
+        for (const auto& diagnostic : parser.diagnostics()) {
             fmt::print(stderr, "{}\n", diagnostic);
         }
         return 0;
