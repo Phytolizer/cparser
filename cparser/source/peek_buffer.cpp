@@ -8,11 +8,11 @@ cc::peek_buffer::peek_buffer(std::string&& source_text) noexcept
 const cc::token& cc::peek_buffer::peek(std::size_t offset) noexcept {
     while (m_buffer.size() <= offset) {
         if (m_iter == m_lexer.end()) {
-            if (m_lexer.begin() == m_lexer.end()) {
+            if (m_buffer.empty()) {
                 m_buffer.emplace_back(syntax_kind::eof_token, source_span{0, 0}, "");
             } else {
                 m_buffer.emplace_back(syntax_kind::eof_token,
-                        source_span::with_length(std::prev(m_lexer.end())->span.begin, 0), "");
+                        source_span::with_length(m_buffer.back().span.begin, 0), "");
             }
         } else {
             m_buffer.emplace_back(*m_iter);
