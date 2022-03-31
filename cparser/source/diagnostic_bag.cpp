@@ -38,6 +38,10 @@ void cc::diagnostic_bag::report_empty_hexadecimal_escape(std::ptrdiff_t index) n
     report(source_span::with_length(index, 2), "Empty hexadecimal escape");
 }
 
+void cc::diagnostic_bag::report_empty_exponent(source_span span) noexcept {
+    report(span, "Exponent has no digits");
+}
+
 void cc::diagnostic_bag::report_no_maidens(source_span span) noexcept {
     report(span, "No maidens?");
 }

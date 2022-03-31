@@ -320,7 +320,9 @@ cc::token cc::lexer::iterator::scan_number() noexcept {
     if (current() == '.' || current() == 'e' || current() == 'E') {
         // success
         kind = syntax_kind::floating_constant_token;
+        bool scanning_exponent = false;
         if (current() == 'e' || current() == 'E') {
+            scanning_exponent = true;
             advance();
             if (current() == '+' || current() == '-') {
                 advance();
@@ -328,8 +330,27 @@ cc::token cc::lexer::iterator::scan_number() noexcept {
         } else {
             advance();
         }
+        auto exponent_start = m_current;
         while (current() >= '0' && current() <= '9') {
             advance();
+        }
+        if (scanning_exponent && m_current == exponent_start) {
+            m_diagnostics->report_empty_exponent(current_span());
+            m_reported_diagnostic = true;
+        }
+        if (current() == 'e' || current() == 'E') {
+            advance();
+            if (current() == '+' || current() == '-') {
+                advance();
+            }
+            auto exponent_start = m_current;
+            while (current() >= '0' && current() <= '9') {
+                advance();
+            }
+            if (m_current == exponent_start) {
+                m_diagnostics->report_empty_exponent(current_span());
+                m_reported_diagnostic = true;
+            }
         }
         if (current() == 'f' || current() == 'F' || current() == 'l' || current() == 'L') {
             advance();
@@ -360,7 +381,7 @@ cc::token cc::lexer::iterator::scan_number() noexcept {
     }
 
     return token{
-            kind,
+            m_reported_diagnostic ? syntax_kind::bad_token : kind,
             current_span(),
             std::string{current_text()},
     };
