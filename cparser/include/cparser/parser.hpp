@@ -19,10 +19,9 @@ class parser final {
     peek_buffer m_buffer;
     diagnostic_bag m_diagnostics;
 
-    template <typename K, typename... Ks>
-    requires std::same_as<K, syntax_kind>
-    constexpr bool is_one_of(K k, Ks... ks) noexcept {
-        return ((m_buffer.peek().kind() == k) || ... || is_one_of(ks));
+    template <std::same_as<syntax_kind>... Ks>
+    constexpr bool is_one_of(syntax_kind kind, Ks... ks) noexcept {
+        return (... || (kind == ks));
     }
 
     template <std::same_as<syntax_kind>... Ks> token match_token(Ks... kinds) noexcept {

@@ -47,14 +47,10 @@ int main(int argc, char** argv) {
             break;
         }
 
-        cc::lexer lexer{std::move(line)};
-        std::vector<cc::token> tokens;
-        std::ranges::copy(lexer, std::back_inserter(tokens));
-        for (const auto& diag : lexer.diagnostics()) {
-            fmt::print("{}\n", diag);
-        }
-        for (const auto& tok : tokens) {
-            fmt::print("{}\n", tok);
+        cc::parser parser{std::move(line)};
+        auto expression = parser.parse();
+        for (const auto& diagnostic : parser.diagnostics()) {
+            fmt::print(stderr, "{}\n", diagnostic);
         }
     }
 }

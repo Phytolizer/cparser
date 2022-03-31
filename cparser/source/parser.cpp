@@ -19,7 +19,9 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_expression() noexcept {
 
 std::unique_ptr<cc::ast::statement> cc::parser::parse_expression_statement() noexcept {
     auto expression = parse_expression();
-    return std::make_unique<ast::expression_statement>(std::move(expression));
+    auto semicolon_token = match_token(syntax_kind::semicolon_token);
+    return std::make_unique<ast::expression_statement>(
+            std::move(expression), std::move(semicolon_token));
 }
 
 cc::parser::parser(std::string&& source_text) noexcept : m_buffer(std::move(source_text)) {}

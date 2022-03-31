@@ -3,9 +3,11 @@
 #include "cparser/diagnostic.hpp"
 #include "cparser/source_span.hpp"
 #include "cparser/syntax_kind.hpp"
+#include "magic_enum.hpp"
 
 #include <cstddef>
 #include <span>
+#include <sstream>
 #include <string_view>
 #include <type_traits>
 #include <vector>
@@ -40,18 +42,20 @@ class diagnostic_bag final {
     template <std::same_as<syntax_kind>... Ks>
     void report_unexpected_token(source_span span, syntax_kind actual, Ks... expected) noexcept {
         std::vector<syntax_kind> expected_kinds = collect_kinds(expected...);
-        std::string expected_kinds_str;
-        for (auto kind : expected_kinds) {
-            if (!expected_kinds_str.empty()) {
-                expected_kinds_str += "> or <";
+        std::ostringstream expected_kinds_stream;
+        for (std::size_t i = 0; auto kind : expected_kinds) {
+            if (i == 0) {
+                expected_kinds_stream << "<";
             } else {
-                expected_kinds_str += "<";
+                expected_kinds_stream << "> or <";
             }
-            expected_kinds_str += fmt::format("'{}'", kind);
+            expected_kinds_stream << magic_enum::enum_name(kind);
+            ++i;
         }
-        expected_kinds_str += ">";
+        expected_kinds_stream << ">";
         report(span,
-                fmt::format("Unexpected token: <{}>, expected: {}", actual, expected_kinds_str));
+                fmt::format("Unexpected token: <{}>, expected: {}", actual,
+                        expected_kinds_stream.str()));
     }
 };
 
