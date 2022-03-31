@@ -12,6 +12,8 @@
 #include "cparser/ast/name_expression.hpp"
 #include "cparser/ast/parenthesized_expression.hpp"
 #include "cparser/ast/separated_syntax_list.hpp"
+#include "cparser/ast/unary_expression.hpp"
+#include "cparser/syntax_facts.hpp"
 #include "cparser/syntax_kind.hpp"
 
 #include <memory>
@@ -124,7 +126,7 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_postfix_expression() noex
 }
 
 std::unique_ptr<cc::ast::expression> cc::parser::parse_expression() noexcept {
-    return parse_postfix_expression();
+    return parse_unary_expression(0);
 }
 
 std::unique_ptr<cc::ast::statement> cc::parser::parse_expression_statement() noexcept {
@@ -143,4 +145,15 @@ std::unique_ptr<cc::ast::statement> cc::parser::parse() noexcept {
 std::span<const cc::diagnostic> cc::parser::diagnostics() noexcept {
     m_diagnostics.add_all(m_buffer.diagnostics());
     return m_diagnostics.diagnostics();
+}
+std::unique_ptr<cc::ast::expression> cc::parser::parse_unary_expression(
+        std::size_t parent_precedence) noexcept {
+    auto unary_operator_precedence = facts::unary_operator_precedence(m_buffer.peek().kind());
+    if (unary_operator_precedence == 0 || unary_operator_precedence < parent_precedence) {
+        return parse_postfix_expression();
+    }
+
+    auto operator_token = m_buffer.advance();
+    auto right = parse_unary_expression(unary_operator_precedence);
+    return std::make_unique<ast::unary_expression>(std::move(operator_token), std::move(right));
 }

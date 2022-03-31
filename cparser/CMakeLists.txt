@@ -10,11 +10,13 @@ add_library(
     "source/ast/name_expression.cpp"
     "source/ast/parenthesized_expression.cpp"
     "source/ast/separated_syntax_list.cpp"
+    "source/ast/unary_expression.cpp"
     "source/diagnostic.cpp"
     "source/diagnostic_bag.cpp"
     "source/lexer.cpp"
     "source/parser.cpp"
     "source/peek_buffer.cpp"
+        "source/syntax_facts.cpp"
     "source/syntax_node.cpp"
     "source/token.cpp"
 )
