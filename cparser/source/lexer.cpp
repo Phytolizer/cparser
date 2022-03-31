@@ -248,6 +248,16 @@ cc::token cc::lexer::iterator::scan_token() noexcept {
             kind = syntax_kind::semicolon_token;
             advance();
             break;
+        case 'L':
+            if (look() == '\'') {
+                advance();
+                return scan_character_literal();
+            } else if (look() == '"') {
+                advance();
+                return scan_string_literal();
+            } else {
+                return scan_identifier();
+            }
         case '\'':
             return scan_character_literal();
         case '"':
@@ -376,6 +386,21 @@ cc::token cc::lexer::iterator::scan_number() noexcept {
         } else {
             while (std::isdigit(current())) {
                 advance();
+            }
+        }
+
+        bool is_long = false;
+        bool is_unsigned = false;
+
+        for (std::size_t i = 0; i < 2; i++) {
+            if (!is_long && std::tolower(current()) == 'l') {
+                advance();
+                is_long = true;
+            } else if (!is_unsigned && std::tolower(current()) == 'u') {
+                advance();
+                is_unsigned = true;
+            } else {
+                break;
             }
         }
     }
