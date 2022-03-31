@@ -30,11 +30,13 @@ std::span<const cc::diagnostic> cc::lexer::diagnostics() const noexcept {
 
 cc::token cc::lexer::iterator::scan_token() noexcept {
     if (m_is_end) {
+        // just in case someone iterates WAY past the end
         return {};
     }
 
     if (m_current >= m_end) {
         m_is_end = true;
+        // the eof_token is actually synthesized by the peek buffer
         return {};
     }
 
