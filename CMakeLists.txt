@@ -25,6 +25,8 @@ CPMAddPackage(
     GIT_TAG "8.1.1"
 )
 
+option(MAIDEN_MODE "Enable maiden requirement" OFF)
+
 enable_testing()
 
 add_subdirectory("cparser")

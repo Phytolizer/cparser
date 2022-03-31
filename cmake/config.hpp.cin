@@ -1,0 +1,7 @@
+#pragma once
+
+namespace cc {
+
+constexpr bool maiden_mode = @MAIDEN_MODE@;
+
+} // namespace cc

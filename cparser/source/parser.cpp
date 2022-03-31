@@ -1,5 +1,6 @@
 #include "cparser/parser.hpp"
 
+#include "config.hpp"
 #include "cparser/ast/expression_statement.hpp"
 #include "cparser/ast/literal_expression.hpp"
 #include "cparser/ast/name_expression.hpp"
@@ -17,6 +18,12 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_literal_expression() noex
 
 std::unique_ptr<cc::ast::expression> cc::parser::parse_name_expression() noexcept {
     auto name_token = match_token("name", syntax_kind::identifier_token);
+
+    if constexpr (maiden_mode) {
+        if (!name_token.text.starts_with("maiden")) {
+            m_diagnostics.report_no_maidens(name_token.span);
+        }
+    }
 
     return std::make_unique<cc::ast::name_expression>(std::move(name_token));
 }
