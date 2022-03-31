@@ -12,7 +12,7 @@ const cc::token& cc::peek_buffer::peek(std::size_t offset) noexcept {
                 m_buffer.emplace_back(syntax_kind::eof_token, source_span{0, 0}, "");
             } else {
                 m_buffer.emplace_back(syntax_kind::eof_token,
-                        source_span::with_length(m_buffer.back().span.begin, 0), "");
+                        source_span::with_length(m_buffer.back().span.end, 0), "");
             }
         } else {
             m_buffer.emplace_back(*m_iter);
