@@ -352,7 +352,7 @@ cc::token cc::lexer::iterator::scan_number() noexcept {
                 m_reported_diagnostic = true;
             }
         }
-        if (current() == 'f' || current() == 'F' || current() == 'l' || current() == 'L') {
+        if (std::tolower(current()) == 'f' || std::tolower(current()) == 'F') {
             advance();
         }
     } else {
