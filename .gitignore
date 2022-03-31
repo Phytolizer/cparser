@@ -4,3 +4,5 @@
 /CMakeUserPresets.json
 *_preprocessed.c
 /.vscode/
+/.vs/
+/.idea/
