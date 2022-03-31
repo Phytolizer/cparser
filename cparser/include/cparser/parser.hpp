@@ -13,6 +13,7 @@
 #include <span>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 namespace cc {
@@ -46,6 +47,7 @@ class parser final {
     std::unique_ptr<ast::expression> parse_name_expression() noexcept;
     std::unique_ptr<ast::expression> parse_parenthesized_expression() noexcept;
     std::unique_ptr<ast::expression> parse_primary_expression() noexcept;
+    std::unique_ptr<ast::expression> parse_postfix_expression() noexcept;
     std::unique_ptr<ast::expression> parse_expression() noexcept;
     std::unique_ptr<ast::statement> parse_expression_statement() noexcept;
 

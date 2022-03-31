@@ -132,6 +132,7 @@ enum class syntax_kind {
     literal_expression,
     name_expression,
     parenthesized_expression,
+    array_index_expression,
 };
 
 } // namespace cc

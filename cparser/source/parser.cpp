@@ -1,6 +1,7 @@
 #include "cparser/parser.hpp"
 
 #include "config.hpp"
+#include "cparser/ast/array_index_expression.hpp"
 #include "cparser/ast/expression_statement.hpp"
 #include "cparser/ast/literal_expression.hpp"
 #include "cparser/ast/name_expression.hpp"
@@ -48,8 +49,31 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_primary_expression() noex
     }
 }
 
+std::unique_ptr<cc::ast::expression> cc::parser::parse_postfix_expression() noexcept {
+    auto left = parse_primary_expression();
+
+    bool looping = true;
+    while (looping) {
+        switch (m_buffer.peek().kind()) {
+            case syntax_kind::left_bracket_token: {
+                auto open_bracket_token = m_buffer.advance();
+                auto index = parse_expression();
+                auto close_bracket_token = match_token({}, syntax_kind::right_bracket_token);
+                left = std::make_unique<ast::array_index_expression>(std::move(left),
+                        std::move(open_bracket_token), std::move(index),
+                        std::move(close_bracket_token));
+            } break;
+            default:
+                looping = false;
+                break;
+        }
+    }
+
+    return left;
+}
+
 std::unique_ptr<cc::ast::expression> cc::parser::parse_expression() noexcept {
-    return parse_primary_expression();
+    return parse_postfix_expression();
 }
 
 std::unique_ptr<cc::ast::statement> cc::parser::parse_expression_statement() noexcept {
