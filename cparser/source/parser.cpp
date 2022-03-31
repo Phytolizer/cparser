@@ -6,6 +6,7 @@
 #include "cparser/ast/expression.hpp"
 #include "cparser/ast/expression_statement.hpp"
 #include "cparser/ast/literal_expression.hpp"
+#include "cparser/ast/member_access_expression.hpp"
 #include "cparser/ast/name_expression.hpp"
 #include "cparser/ast/parenthesized_expression.hpp"
 #include "cparser/ast/separated_syntax_list.hpp"
@@ -93,6 +94,13 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_postfix_expression() noex
                 left = std::make_unique<ast::call_expression>(std::move(left),
                         std::move(open_parenthesis_token), std::move(arguments),
                         std::move(close_parenthesis_token));
+            } break;
+            case syntax_kind::period_token:
+            case syntax_kind::arrow_token: {
+                auto operator_token = m_buffer.advance();
+                auto name_token = match_token({}, syntax_kind::identifier_token);
+                left = std::make_unique<ast::member_access_expression>(
+                        std::move(left), std::move(operator_token), std::move(name_token));
             } break;
             default:
                 looping = false;

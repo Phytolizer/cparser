@@ -4,6 +4,7 @@ add_library(
     "source/ast/call_expression.cpp"
     "source/ast/expression_statement.cpp"
     "source/ast/literal_expression.cpp"
+    "source/ast/member_access_expression.cpp"
     "source/ast/name_expression.cpp"
     "source/ast/parenthesized_expression.cpp"
     "source/ast/separated_syntax_list.cpp"

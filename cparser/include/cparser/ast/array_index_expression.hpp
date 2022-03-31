@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <vector>
+
 namespace cc::ast {
 
 class array_index_expression final : public expression {
