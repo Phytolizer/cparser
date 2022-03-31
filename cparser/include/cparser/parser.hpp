@@ -43,6 +43,9 @@ class parser final {
     }
 
     std::unique_ptr<ast::expression> parse_literal_expression() noexcept;
+    std::unique_ptr<ast::expression> parse_name_expression() noexcept;
+    std::unique_ptr<ast::expression> parse_parenthesized_expression() noexcept;
+    std::unique_ptr<ast::expression> parse_primary_expression() noexcept;
     std::unique_ptr<ast::expression> parse_expression() noexcept;
     std::unique_ptr<ast::statement> parse_expression_statement() noexcept;
 
