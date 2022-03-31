@@ -6,6 +6,7 @@
 #include "magic_enum.hpp"
 
 #include <cstddef>
+#include <optional>
 #include <span>
 #include <sstream>
 #include <string_view>
@@ -40,19 +41,24 @@ class diagnostic_bag final {
     }
 
     template <std::same_as<syntax_kind>... Ks>
-    void report_unexpected_token(source_span span, syntax_kind actual, Ks... expected) noexcept {
+    void report_unexpected_token(source_span span, std::optional<std::string_view> description,
+            syntax_kind actual, Ks... expected) noexcept {
         std::vector<syntax_kind> expected_kinds = collect_kinds(expected...);
         std::ostringstream expected_kinds_stream;
-        for (std::size_t i = 0; auto kind : expected_kinds) {
-            if (i == 0) {
-                expected_kinds_stream << "<";
-            } else {
-                expected_kinds_stream << "> or <";
+        if (description) {
+            expected_kinds_stream << *description;
+        } else {
+            for (std::size_t i = 0; auto kind : expected_kinds) {
+                if (i == 0) {
+                    expected_kinds_stream << "<";
+                } else {
+                    expected_kinds_stream << "> or <";
+                }
+                expected_kinds_stream << magic_enum::enum_name(kind);
+                ++i;
             }
-            expected_kinds_stream << magic_enum::enum_name(kind);
-            ++i;
+            expected_kinds_stream << ">";
         }
-        expected_kinds_stream << ">";
         report(span,
                 fmt::format("Unexpected token: <{}>, expected: {}", actual,
                         expected_kinds_stream.str()));

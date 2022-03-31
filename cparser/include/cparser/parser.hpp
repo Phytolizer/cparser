@@ -9,8 +9,10 @@
 #include "cparser/token.hpp"
 
 #include <memory>
+#include <optional>
 #include <span>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace cc {
@@ -24,12 +26,13 @@ class parser final {
         return (... || (kind == ks));
     }
 
-    template <std::same_as<syntax_kind>... Ks> token match_token(Ks... kinds) noexcept {
+    template <std::same_as<syntax_kind>... Ks>
+    token match_token(std::optional<std::string_view> description, Ks... kinds) noexcept {
         auto tok = m_buffer.peek();
         if (is_one_of(tok.kind(), kinds...)) {
             return m_buffer.advance();
         }
-        m_diagnostics.report_unexpected_token(tok.span, tok.kind(), kinds...);
+        m_diagnostics.report_unexpected_token(tok.span, description, tok.kind(), kinds...);
         auto manufactured_token = token{
                 syntax_kind::bad_token,
                 source_span::with_length(tok.span.begin, 0),

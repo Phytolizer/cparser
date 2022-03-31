@@ -5,10 +5,10 @@
 #include "cparser/syntax_kind.hpp"
 
 std::unique_ptr<cc::ast::expression> cc::parser::parse_literal_expression() noexcept {
-    auto literal_token =
-            match_token(syntax_kind::string_literal_token, syntax_kind::character_constant_token,
-                    syntax_kind::decimal_constant_token, syntax_kind::floating_constant_token,
-                    syntax_kind::hexadecimal_constant_token, syntax_kind::octal_constant_token);
+    auto literal_token = match_token("literal", syntax_kind::string_literal_token,
+            syntax_kind::character_constant_token, syntax_kind::decimal_constant_token,
+            syntax_kind::floating_constant_token, syntax_kind::hexadecimal_constant_token,
+            syntax_kind::octal_constant_token);
 
     return std::make_unique<cc::ast::literal_expression>(std::move(literal_token));
 }
@@ -19,7 +19,7 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_expression() noexcept {
 
 std::unique_ptr<cc::ast::statement> cc::parser::parse_expression_statement() noexcept {
     auto expression = parse_expression();
-    auto semicolon_token = match_token(syntax_kind::semicolon_token);
+    auto semicolon_token = match_token({}, syntax_kind::semicolon_token);
     return std::make_unique<ast::expression_statement>(
             std::move(expression), std::move(semicolon_token));
 }
