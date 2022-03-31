@@ -1,6 +1,13 @@
 add_library(
-    "cparser" "source/diagnostic.cpp" "source/diagnostic_bag.cpp"
-              "source/lexer.cpp" "source/token.cpp"
+    "cparser"
+    "source/ast/expression_statement.cpp"
+    "source/ast/literal_expression.cpp"
+    "source/diagnostic.cpp"
+    "source/diagnostic_bag.cpp"
+    "source/lexer.cpp"
+    "source/parser.cpp"
+    "source/peek_buffer.cpp"
+    "source/token.cpp"
 )
 target_include_directories("cparser" PUBLIC "include")
 

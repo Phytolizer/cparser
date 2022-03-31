@@ -4,7 +4,9 @@
 #include "cparser/source_span.hpp"
 #include "fmt/core.h"
 
+#include <algorithm>
 #include <cstddef>
+#include <ranges>
 #include <span>
 #include <string>
 #include <string_view>
@@ -38,4 +40,8 @@ void cc::diagnostic_bag::report_empty_hexadecimal_escape(std::ptrdiff_t index) n
 
 std::span<const cc::diagnostic> cc::diagnostic_bag::diagnostics() const noexcept {
     return m_diagnostics;
+}
+
+void cc::diagnostic_bag::add_all(std::span<const diagnostic> diagnostics) noexcept {
+    std::ranges::copy(diagnostics, std::back_inserter(m_diagnostics));
 }

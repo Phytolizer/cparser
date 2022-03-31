@@ -123,7 +123,13 @@ enum class syntax_kind {
     // Syntax nodes
     // ====
 
-    // TBD
+    // Statements
+    // ----
+    expression_statement,
+
+    // Expressions
+    // ----
+    literal_expression,
 };
 
 } // namespace cc

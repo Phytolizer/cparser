@@ -1,4 +1,5 @@
 #include "cparser/lexer.hpp"
+#include "cparser/parser.hpp"
 #include "cparser/token.hpp"
 #include "fmt/core.h"
 
@@ -32,16 +33,11 @@ int main(int argc, char** argv) {
         std::copy(std::istreambuf_iterator{file}, std::istreambuf_iterator<char>{},
                 std::ostreambuf_iterator{buffer});
 
-        auto lexer = cc::lexer{buffer.str()};
-        std::vector<cc::token> tokens;
-        std::ranges::copy(lexer, std::back_inserter(tokens));
-        for (const auto& diag : lexer.diagnostics()) {
-            fmt::print("{}\n", diag);
-        }
-        if (lexer.diagnostics().empty()) {
-            for (const auto& tok : tokens) {
-                fmt::print("{}\n", tok);
-            }
+        auto parser = cc::parser{buffer.str()};
+        auto expression = parser.parse();
+        auto diagnostics = parser.diagnostics();
+        for (auto diagnostic : diagnostics) {
+            fmt::print(stderr, "{}\n", diagnostic);
         }
         return 0;
     }
