@@ -30,6 +30,7 @@ class parser final {
             return m_buffer.advance();
         }
         m_diagnostics.report_unexpected_token(tok.span, tok.kind(), kinds...);
+        m_buffer.advance();
         return token{syntax_kind::bad_token, source_span::with_length(tok.span.begin, 0), ""};
     }
 
