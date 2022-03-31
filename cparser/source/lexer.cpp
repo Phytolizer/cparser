@@ -533,6 +533,10 @@ cc::token cc::lexer::iterator::operator*() const noexcept {
     return m_just_scanned;
 }
 
+const cc::token* cc::lexer::iterator::operator->() const noexcept {
+    return &m_just_scanned;
+}
+
 void cc::lexer::iterator::advance(std::ptrdiff_t count) noexcept {
     m_current += count;
 }

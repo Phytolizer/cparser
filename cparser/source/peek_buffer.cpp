@@ -1,12 +1,23 @@
 #include "cparser/peek_buffer.hpp"
 
+#include "cparser/source_span.hpp"
+
 cc::peek_buffer::peek_buffer(std::string&& source_text) noexcept
     : m_lexer(std::move(source_text)), m_iter(m_lexer.begin()) {}
 
 const cc::token& cc::peek_buffer::peek(std::size_t offset) noexcept {
     while (m_buffer.size() <= offset) {
-        m_buffer.emplace_back(*m_iter);
-        ++m_iter;
+        if (m_iter == m_lexer.end()) {
+            if (m_lexer.begin() == m_lexer.end()) {
+                m_buffer.emplace_back(syntax_kind::eof_token, source_span{0, 0}, "");
+            } else {
+                m_buffer.emplace_back(syntax_kind::eof_token,
+                        source_span::with_length(std::prev(m_lexer.end())->span.begin, 0), "");
+            }
+        } else {
+            m_buffer.emplace_back(*m_iter);
+            ++m_iter;
+        }
     }
 
     return m_buffer[offset];

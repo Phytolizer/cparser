@@ -56,6 +56,7 @@ class lexer final {
         iterator& operator++() noexcept;
         iterator operator++(int) noexcept;
         token operator*() const noexcept;
+        const token* operator->() const noexcept;
     };
 
     explicit lexer(std::string&& source_text) noexcept;
