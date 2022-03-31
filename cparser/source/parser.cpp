@@ -2,11 +2,17 @@
 
 #include "config.hpp"
 #include "cparser/ast/array_index_expression.hpp"
+#include "cparser/ast/call_expression.hpp"
+#include "cparser/ast/expression.hpp"
 #include "cparser/ast/expression_statement.hpp"
 #include "cparser/ast/literal_expression.hpp"
 #include "cparser/ast/name_expression.hpp"
 #include "cparser/ast/parenthesized_expression.hpp"
+#include "cparser/ast/separated_syntax_list.hpp"
 #include "cparser/syntax_kind.hpp"
+
+#include <memory>
+#include <vector>
 
 std::unique_ptr<cc::ast::expression> cc::parser::parse_literal_expression() noexcept {
     auto literal_token = match_token("literal", syntax_kind::string_literal_token,
@@ -38,6 +44,22 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_parenthesized_expression(
             std::move(expression), std::move(close_parenthesis_token));
 }
 
+cc::ast::separated_syntax_list<cc::ast::expression> cc::parser::parse_argument_list() noexcept {
+    auto arguments = std::vector<std::unique_ptr<syntax_node>>{};
+
+    if (m_buffer.peek().kind() != syntax_kind::right_parenthesis_token) {
+        arguments.emplace_back(parse_expression());
+
+        while (m_buffer.peek().kind() == syntax_kind::comma_token) {
+            arguments.emplace_back(
+                    std::make_unique<token>(match_token({}, syntax_kind::comma_token)));
+            arguments.emplace_back(parse_expression());
+        }
+    }
+
+    return ast::separated_syntax_list<ast::expression>{std::move(arguments)};
+}
+
 std::unique_ptr<cc::ast::expression> cc::parser::parse_primary_expression() noexcept {
     switch (m_buffer.peek().kind()) {
         case syntax_kind::identifier_token:
@@ -62,6 +84,15 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_postfix_expression() noex
                 left = std::make_unique<ast::array_index_expression>(std::move(left),
                         std::move(open_bracket_token), std::move(index),
                         std::move(close_bracket_token));
+            } break;
+            case syntax_kind::left_parenthesis_token: {
+                auto open_parenthesis_token = m_buffer.advance();
+                auto arguments = parse_argument_list();
+                auto close_parenthesis_token =
+                        match_token({}, syntax_kind::right_parenthesis_token);
+                left = std::make_unique<ast::call_expression>(std::move(left),
+                        std::move(open_parenthesis_token), std::move(arguments),
+                        std::move(close_parenthesis_token));
             } break;
             default:
                 looping = false;

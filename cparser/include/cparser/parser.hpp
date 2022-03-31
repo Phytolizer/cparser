@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cparser/ast/expression.hpp"
+#include "cparser/ast/separated_syntax_list.hpp"
 #include "cparser/ast/statement.hpp"
 #include "cparser/diagnostic_bag.hpp"
 #include "cparser/peek_buffer.hpp"
@@ -47,6 +48,7 @@ class parser final {
     std::unique_ptr<ast::expression> parse_name_expression() noexcept;
     std::unique_ptr<ast::expression> parse_parenthesized_expression() noexcept;
     std::unique_ptr<ast::expression> parse_primary_expression() noexcept;
+    ast::separated_syntax_list<ast::expression> parse_argument_list() noexcept;
     std::unique_ptr<ast::expression> parse_postfix_expression() noexcept;
     std::unique_ptr<ast::expression> parse_expression() noexcept;
     std::unique_ptr<ast::statement> parse_expression_statement() noexcept;
