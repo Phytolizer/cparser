@@ -43,6 +43,7 @@ int main(int argc, char** argv) {
 
     std::string line;
     while (true) {
+        fmt::print("> ");
         if (!std::getline(std::cin, line)) {
             break;
         }
