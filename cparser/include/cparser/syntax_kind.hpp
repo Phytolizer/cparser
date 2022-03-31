@@ -135,6 +135,8 @@ enum class syntax_kind {
     array_index_expression,
     call_expression,
     member_access_expression,
+    increment_expression,
+    decrement_expression,
 };
 
 } // namespace cc

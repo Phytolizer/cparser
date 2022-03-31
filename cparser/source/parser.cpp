@@ -3,8 +3,10 @@
 #include "config.hpp"
 #include "cparser/ast/array_index_expression.hpp"
 #include "cparser/ast/call_expression.hpp"
+#include "cparser/ast/decrement_expression.hpp"
 #include "cparser/ast/expression.hpp"
 #include "cparser/ast/expression_statement.hpp"
+#include "cparser/ast/increment_expression.hpp"
 #include "cparser/ast/literal_expression.hpp"
 #include "cparser/ast/member_access_expression.hpp"
 #include "cparser/ast/name_expression.hpp"
@@ -101,6 +103,16 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_postfix_expression() noex
                 auto name_token = match_token({}, syntax_kind::identifier_token);
                 left = std::make_unique<ast::member_access_expression>(
                         std::move(left), std::move(operator_token), std::move(name_token));
+            } break;
+            case syntax_kind::plus_plus_token: {
+                auto operator_token = m_buffer.advance();
+                left = std::make_unique<ast::increment_expression>(
+                        std::move(left), std::move(operator_token));
+            } break;
+            case syntax_kind::minus_minus_token: {
+                auto operator_token = m_buffer.advance();
+                left = std::make_unique<ast::decrement_expression>(
+                        std::move(left), std::move(operator_token));
             } break;
             default:
                 looping = false;
