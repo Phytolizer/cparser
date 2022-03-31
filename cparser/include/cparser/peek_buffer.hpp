@@ -13,6 +13,7 @@ class peek_buffer final {
     lexer m_lexer;
     lexer::iterator m_iter;
     std::deque<token> m_buffer;
+    token m_last;
 
   public:
     explicit peek_buffer(std::string&& source_text) noexcept;
