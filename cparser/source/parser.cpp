@@ -13,7 +13,7 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_literal_expression() noex
             syntax_kind::floating_constant_token, syntax_kind::hexadecimal_constant_token,
             syntax_kind::octal_constant_token);
 
-    return std::make_unique<cc::ast::literal_expression>(std::move(literal_token));
+    return std::make_unique<ast::literal_expression>(std::move(literal_token));
 }
 
 std::unique_ptr<cc::ast::expression> cc::parser::parse_name_expression() noexcept {
@@ -25,7 +25,7 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_name_expression() noexcep
         }
     }
 
-    return std::make_unique<cc::ast::name_expression>(std::move(name_token));
+    return std::make_unique<ast::name_expression>(std::move(name_token));
 }
 
 std::unique_ptr<cc::ast::expression> cc::parser::parse_parenthesized_expression() noexcept {
@@ -33,7 +33,7 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_parenthesized_expression(
     auto expression = parse_expression();
     auto close_parenthesis_token = match_token({}, syntax_kind::right_parenthesis_token);
 
-    return std::make_unique<cc::ast::parenthesized_expression>(std::move(open_parenthesis_token),
+    return std::make_unique<ast::parenthesized_expression>(std::move(open_parenthesis_token),
             std::move(expression), std::move(close_parenthesis_token));
 }
 
