@@ -18,6 +18,13 @@
             }
         },
         {
+            "name": "flags-windows",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_CXX_FLAGS": "/W4 /EHsc"
+            }
+        },
+        {
             "name": "dist-base",
             "hidden": true,
             "cacheVariables": {

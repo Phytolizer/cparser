@@ -355,7 +355,7 @@ cc::token cc::lexer::iterator::scan_number() noexcept {
             if (current() == '+' || current() == '-') {
                 advance();
             }
-            auto exponent_start = m_current;
+            exponent_start = m_current;
             while (current() >= '0' && current() <= '9') {
                 advance();
             }
