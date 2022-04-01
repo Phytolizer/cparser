@@ -138,6 +138,7 @@ enum class syntax_kind {
     increment_expression,
     decrement_expression,
     unary_expression,
+    binary_expression,
 };
 
 } // namespace cc

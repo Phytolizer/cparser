@@ -2,6 +2,7 @@
 
 #include "config.hpp"
 #include "cparser/ast/array_index_expression.hpp"
+#include "cparser/ast/binary_expression.hpp"
 #include "cparser/ast/call_expression.hpp"
 #include "cparser/ast/decrement_expression.hpp"
 #include "cparser/ast/expression.hpp"
@@ -125,8 +126,39 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_postfix_expression() noex
     return left;
 }
 
+std::unique_ptr<cc::ast::expression> cc::parser::parse_unary_expression(
+        std::size_t parent_precedence) noexcept {
+    auto unary_operator_precedence = facts::unary_operator_precedence(m_buffer.peek().kind());
+    if (unary_operator_precedence == 0 || unary_operator_precedence < parent_precedence) {
+        return parse_postfix_expression();
+    }
+
+    auto operator_token = m_buffer.advance();
+    auto right = parse_unary_expression(unary_operator_precedence);
+    return std::make_unique<ast::unary_expression>(std::move(operator_token), std::move(right));
+}
+
+std::unique_ptr<cc::ast::expression> cc::parser::parse_binary_expression(
+        std::size_t parent_precedence) noexcept {
+    auto left = parse_unary_expression(parent_precedence);
+
+    while (true) {
+        auto precedence = facts::binary_operator_precedence(m_buffer.peek().kind());
+        if (precedence == 0 || precedence <= parent_precedence) {
+            break;
+        }
+
+        auto operator_token = m_buffer.advance();
+        auto right = parse_binary_expression(precedence);
+        left = std::make_unique<ast::binary_expression>(
+                std::move(left), std::move(operator_token), std::move(right));
+    }
+
+    return left;
+}
+
 std::unique_ptr<cc::ast::expression> cc::parser::parse_expression() noexcept {
-    return parse_unary_expression(0);
+    return parse_binary_expression(0);
 }
 
 std::unique_ptr<cc::ast::statement> cc::parser::parse_expression_statement() noexcept {
@@ -145,15 +177,4 @@ std::unique_ptr<cc::ast::statement> cc::parser::parse() noexcept {
 std::span<const cc::diagnostic> cc::parser::diagnostics() noexcept {
     m_diagnostics.add_all(m_buffer.diagnostics());
     return m_diagnostics.diagnostics();
-}
-std::unique_ptr<cc::ast::expression> cc::parser::parse_unary_expression(
-        std::size_t parent_precedence) noexcept {
-    auto unary_operator_precedence = facts::unary_operator_precedence(m_buffer.peek().kind());
-    if (unary_operator_precedence == 0 || unary_operator_precedence < parent_precedence) {
-        return parse_postfix_expression();
-    }
-
-    auto operator_token = m_buffer.advance();
-    auto right = parse_unary_expression(unary_operator_precedence);
-    return std::make_unique<ast::unary_expression>(std::move(operator_token), std::move(right));
 }

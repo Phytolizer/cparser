@@ -1,6 +1,7 @@
 add_library(
     "cparser"
     "source/ast/array_index_expression.cpp"
+    "source/ast/binary_expression.cpp"
     "source/ast/call_expression.cpp"
     "source/ast/decrement_expression.cpp"
     "source/ast/expression_statement.cpp"
@@ -16,7 +17,7 @@ add_library(
     "source/lexer.cpp"
     "source/parser.cpp"
     "source/peek_buffer.cpp"
-        "source/syntax_facts.cpp"
+    "source/syntax_facts.cpp"
     "source/syntax_node.cpp"
     "source/token.cpp"
 )
