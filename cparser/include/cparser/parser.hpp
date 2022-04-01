@@ -4,6 +4,7 @@
 #include "cparser/ast/separated_syntax_list.hpp"
 #include "cparser/ast/statement.hpp"
 #include "cparser/diagnostic_bag.hpp"
+#include "cparser/lexer.hpp"
 #include "cparser/peek_buffer.hpp"
 #include "cparser/source_span.hpp"
 #include "cparser/syntax_kind.hpp"
@@ -20,6 +21,7 @@
 namespace cc {
 
 class parser final {
+    lexer m_lexer;
     peek_buffer m_buffer;
     diagnostic_bag m_diagnostics;
 

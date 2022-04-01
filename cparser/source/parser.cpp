@@ -176,6 +176,7 @@ std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_conditional_expres
 }
 
 std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_assignment_expression() noexcept {
+    auto expression_start = m_buffer;
     auto left = parse_unary_expression(0);
 
     if (facts::is_assignment_operator(m_buffer.peek().kind())) {
@@ -185,7 +186,8 @@ std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_assignment_express
         left = std::make_unique<ast::assignment_expression>(
                 std::move(left), std::move(operator_token), std::move(right));
     } else {
-        // FIXME: #1 continue parsing conditional_expression???
+        m_buffer = expression_start;
+        return parse_conditional_expression();
     }
 
     return left;
@@ -202,13 +204,14 @@ std::unique_ptr<cc::ast::statement> cc::parser::parse_expression_statement() noe
             std::move(expression), std::move(semicolon_token));
 }
 
-cc::parser::parser(std::string&& source_text) noexcept : m_buffer(std::move(source_text)) {}
+cc::parser::parser(std::string&& source_text) noexcept
+    : m_lexer(std::move(source_text)), m_buffer(m_lexer) {}
 
 std::unique_ptr<cc::ast::statement> cc::parser::parse() noexcept {
     return parse_expression_statement();
 }
 
 std::span<const cc::diagnostic> cc::parser::diagnostics() noexcept {
-    m_diagnostics.add_all(m_buffer.diagnostics());
+    m_diagnostics.add_all(m_lexer.diagnostics());
     return m_diagnostics.diagnostics();
 }

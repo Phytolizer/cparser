@@ -10,18 +10,16 @@
 namespace cc {
 
 class peek_buffer final {
-    lexer m_lexer;
     lexer::iterator m_iter;
+    lexer::iterator m_end;
     std::deque<token> m_buffer;
     token m_last;
 
   public:
-    explicit peek_buffer(std::string&& source_text) noexcept;
+    explicit peek_buffer(lexer& lex) noexcept;
 
     const token& peek(std::size_t offset = 0) noexcept;
     token advance() noexcept;
-
-    std::span<const diagnostic> diagnostics() const noexcept;
 };
 
 } // namespace cc

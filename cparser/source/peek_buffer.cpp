@@ -3,12 +3,11 @@
 #include "cparser/source_span.hpp"
 #include "cparser/syntax_kind.hpp"
 
-cc::peek_buffer::peek_buffer(std::string&& source_text) noexcept
-    : m_lexer(std::move(source_text)), m_iter(m_lexer.begin()) {}
+cc::peek_buffer::peek_buffer(lexer& lex) noexcept : m_iter(lex.begin()), m_end(lex.end()) {}
 
 const cc::token& cc::peek_buffer::peek(std::size_t offset) noexcept {
     while (m_buffer.size() <= offset) {
-        if (m_iter == m_lexer.end()) {
+        if (m_iter == m_end) {
             m_buffer.emplace_back(syntax_kind::eof_token,
                     source_span::with_length(m_last.span.end, 0), "", std::vector<trivia>{},
                     std::vector<trivia>{});
@@ -26,8 +25,4 @@ cc::token cc::peek_buffer::advance() noexcept {
     m_buffer.pop_front();
     m_last = tok;
     return tok;
-}
-
-std::span<const cc::diagnostic> cc::peek_buffer::diagnostics() const noexcept {
-    return m_lexer.diagnostics();
 }
