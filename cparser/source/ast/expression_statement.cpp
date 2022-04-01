@@ -9,7 +9,10 @@ cc::syntax_kind cc::ast::expression_statement::kind() const noexcept {
 }
 
 std::vector<const cc::syntax_node*> cc::ast::expression_statement::children() const noexcept {
-    return {m_expression.get(), &m_semicolon_token};
+    if (m_expression) {
+        return {m_expression.get(), &m_semicolon_token};
+    }
+    return {&m_semicolon_token};
 }
 
 const cc::ast::expression_syntax& cc::ast::expression_statement::expression() const noexcept {

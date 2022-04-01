@@ -214,6 +214,10 @@ std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_expression() noexc
 }
 
 std::unique_ptr<cc::ast::statement> cc::parser::parse_expression_statement() noexcept {
+    if (m_buffer.peek().kind() == syntax_kind::semicolon_token) {
+        auto semicolon_token = m_buffer.advance();
+        return std::make_unique<ast::expression_statement>(nullptr, std::move(semicolon_token));
+    }
     auto expression = parse_expression();
     auto semicolon_token = match_token({}, syntax_kind::semicolon_token);
     return std::make_unique<ast::expression_statement>(
