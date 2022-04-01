@@ -72,6 +72,10 @@ std::string_view cc::source_text::operator[](text_line line) const noexcept {
     return std::string_view{m_text.begin() + line.begin, m_text.begin() + line.end()};
 }
 
+std::string_view cc::source_text::operator[](source_span span) const noexcept {
+    return std::string_view{m_text.begin() + span.begin, m_text.begin() + span.end};
+}
+
 std::string::const_iterator cc::source_text::begin() const noexcept {
     return m_text.begin();
 }

@@ -1,9 +1,11 @@
 #include "cparser/diagnostic.hpp"
 #include "cparser/lexer.hpp"
 #include "cparser/parser.hpp"
+#include "cparser/source_span.hpp"
 #include "cparser/source_text.hpp"
 #include "cparser/token.hpp"
 #include "fmt/core.h"
+#include "rang.hpp"
 
 #include <algorithm>
 #include <cstddef>
@@ -19,10 +21,15 @@
 void show_diagnostic(const cc::source_text& source, const cc::diagnostic& diag) {
     auto line_index = source.get_line_index(diag.span.begin);
     auto line_number = line_index + 1;
-    auto character = diag.span.begin - source.lines()[line_index].begin + 1;
+    auto line = source.lines()[line_index];
+    auto character = diag.span.begin - line.begin + 1;
+    auto prefix_span = cc::source_span{line.begin, diag.span.begin};
+    auto error_span = diag.span;
+    auto suffix_span = cc::source_span{diag.span.end, line.end()};
 
     fmt::print(stderr, "({}, {}): {}\n", line_number, character, diag.message);
-    fmt::print(stderr, "    {}\n", source[source.lines()[line_index]]);
+    std::cout << "    " << source[prefix_span] << rang::fg::red << source[error_span]
+              << rang::fg::reset << source[suffix_span] << '\n';
 }
 
 int main(int argc, char** argv) {

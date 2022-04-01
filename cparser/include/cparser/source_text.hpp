@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cparser/source_span.hpp"
 #include "cparser/text_line.hpp"
 
 #include <cstddef>
@@ -23,6 +24,7 @@ class source_text final {
 
     std::span<const text_line> lines() const noexcept;
     std::string_view operator[](text_line line) const noexcept;
+    std::string_view operator[](source_span span) const noexcept;
 
     std::string::const_iterator begin() const noexcept;
     std::string::const_iterator end() const noexcept;
