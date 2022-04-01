@@ -29,8 +29,8 @@ class lexer final {
         syntax_kind m_kind;
         diagnostic_bag* m_diagnostics;
         bool m_is_end;
-        token m_just_scanned;
         std::vector<trivia> m_trivia_builder;
+        token m_just_scanned;
 
         token scan() noexcept;
         void scan_trivia(bool leading) noexcept;
