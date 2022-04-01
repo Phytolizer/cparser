@@ -12,7 +12,11 @@ fmt_proj = subproject('fmt')
 fmt_dep = fmt_proj.get_variable('fmt_dep')
 
 conf_data = configuration_data()
-conf_data.set('maiden_mode', 'false')
+if get_option('maiden_mode')
+    conf_data.set('maiden_mode', 'true')
+else
+    conf_data.set('maiden_mode', 'false')
+endif
 configure_file(
     input : 'config.hpp.cin',
     output : 'config.hpp',

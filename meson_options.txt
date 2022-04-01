@@ -1,0 +1,6 @@
+option(
+    'maiden_mode',
+    type : 'boolean',
+    value : false,
+    description : 'Require programmers have maidens'
+)
