@@ -21,7 +21,7 @@
 #include <memory>
 #include <vector>
 
-std::unique_ptr<cc::ast::expression> cc::parser::parse_literal_expression() noexcept {
+std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_literal_expression() noexcept {
     auto literal_token = match_token("literal", syntax_kind::string_literal_token,
             syntax_kind::character_constant_token, syntax_kind::decimal_constant_token,
             syntax_kind::floating_constant_token, syntax_kind::hexadecimal_constant_token,
@@ -30,7 +30,7 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_literal_expression() noex
     return std::make_unique<ast::literal_expression>(std::move(literal_token));
 }
 
-std::unique_ptr<cc::ast::expression> cc::parser::parse_name_expression() noexcept {
+std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_name_expression() noexcept {
     auto name_token = match_token("name", syntax_kind::identifier_token);
 
     if constexpr (maiden_mode) {
@@ -42,7 +42,7 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_name_expression() noexcep
     return std::make_unique<ast::name_expression>(std::move(name_token));
 }
 
-std::unique_ptr<cc::ast::expression> cc::parser::parse_parenthesized_expression() noexcept {
+std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_parenthesized_expression() noexcept {
     auto open_parenthesis_token = match_token({}, syntax_kind::left_parenthesis_token);
     auto expression = parse_expression();
     auto close_parenthesis_token = match_token({}, syntax_kind::right_parenthesis_token);
@@ -51,7 +51,7 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_parenthesized_expression(
             std::move(expression), std::move(close_parenthesis_token));
 }
 
-cc::ast::separated_syntax_list<cc::ast::expression> cc::parser::parse_argument_list() noexcept {
+cc::ast::separated_syntax_list<cc::ast::expression_syntax> cc::parser::parse_argument_list() noexcept {
     auto arguments = std::vector<std::unique_ptr<syntax_node>>{};
 
     if (m_buffer.peek().kind() != syntax_kind::right_parenthesis_token) {
@@ -64,10 +64,10 @@ cc::ast::separated_syntax_list<cc::ast::expression> cc::parser::parse_argument_l
         }
     }
 
-    return ast::separated_syntax_list<ast::expression>{std::move(arguments)};
+    return ast::separated_syntax_list<ast::expression_syntax>{std::move(arguments)};
 }
 
-std::unique_ptr<cc::ast::expression> cc::parser::parse_primary_expression() noexcept {
+std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_primary_expression() noexcept {
     switch (m_buffer.peek().kind()) {
         case syntax_kind::identifier_token:
             return parse_name_expression();
@@ -78,7 +78,7 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_primary_expression() noex
     }
 }
 
-std::unique_ptr<cc::ast::expression> cc::parser::parse_postfix_expression() noexcept {
+std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_postfix_expression() noexcept {
     auto left = parse_primary_expression();
 
     bool looping = true;
@@ -127,7 +127,7 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_postfix_expression() noex
     return left;
 }
 
-std::unique_ptr<cc::ast::expression> cc::parser::parse_unary_expression(
+std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_unary_expression(
         std::size_t parent_precedence) noexcept {
     auto unary_operator_precedence = facts::unary_operator_precedence(m_buffer.peek().kind());
     if (unary_operator_precedence == 0 || unary_operator_precedence < parent_precedence) {
@@ -139,7 +139,7 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_unary_expression(
     return std::make_unique<ast::unary_expression>(std::move(operator_token), std::move(right));
 }
 
-std::unique_ptr<cc::ast::expression> cc::parser::parse_binary_expression(
+std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_binary_expression(
         std::size_t parent_precedence) noexcept {
     auto left = parse_unary_expression(parent_precedence);
 
@@ -158,7 +158,7 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_binary_expression(
     return left;
 }
 
-std::unique_ptr<cc::ast::expression> cc::parser::parse_conditional_expression() noexcept {
+std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_conditional_expression() noexcept {
     auto condition = parse_binary_expression(0);
     if (m_buffer.peek().kind() != syntax_kind::question_token) {
         return condition;
@@ -173,7 +173,7 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_conditional_expression() 
             std::move(else_expression));
 }
 
-std::unique_ptr<cc::ast::expression> cc::parser::parse_expression() noexcept {
+std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_expression() noexcept {
     return parse_binary_expression(0);
 }
 

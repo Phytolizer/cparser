@@ -11,17 +11,17 @@
 namespace cc::ast {
 
 class expression_statement final : public statement {
-    std::unique_ptr<expression> m_expression;
+    std::unique_ptr<expression_syntax> m_expression;
     token m_semicolon_token;
 
   public:
     explicit expression_statement(
-            std::unique_ptr<expression> expression, token&& semicolon_token) noexcept;
+            std::unique_ptr<expression_syntax> expression, token&& semicolon_token) noexcept;
 
     syntax_kind kind() const noexcept override;
     std::vector<const syntax_node*> children() const noexcept override;
 
-    const expression& expression() const noexcept;
+    const expression_syntax& expression() const noexcept;
     const token& semicolon_token() const noexcept;
 };
 

@@ -1,7 +1,7 @@
 #include "cparser/ast/increment_expression.hpp"
 
 cc::ast::increment_expression::increment_expression(
-        std::unique_ptr<ast::expression> expression, token&& punctuator) noexcept
+        std::unique_ptr<ast::expression_syntax> expression, token&& punctuator) noexcept
     : m_expression(std::move(expression)), m_punctuator(std::move(punctuator)) {}
 
 cc::syntax_kind cc::ast::increment_expression::kind() const noexcept {
@@ -12,7 +12,7 @@ std::vector<const cc::syntax_node*> cc::ast::increment_expression::children() co
     return {m_expression.get(), &m_punctuator};
 }
 
-const cc::ast::expression& cc::ast::increment_expression::expression() const noexcept {
+const cc::ast::expression_syntax& cc::ast::increment_expression::expression() const noexcept {
     return *m_expression;
 }
 

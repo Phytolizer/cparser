@@ -46,17 +46,17 @@ class parser final {
         return manufactured_token;
     }
 
-    std::unique_ptr<ast::expression> parse_literal_expression() noexcept;
-    std::unique_ptr<ast::expression> parse_name_expression() noexcept;
-    std::unique_ptr<ast::expression> parse_parenthesized_expression() noexcept;
-    std::unique_ptr<ast::expression> parse_primary_expression() noexcept;
-    ast::separated_syntax_list<ast::expression> parse_argument_list() noexcept;
-    std::unique_ptr<ast::expression> parse_postfix_expression() noexcept;
-    std::unique_ptr<ast::expression> parse_unary_expression(std::size_t parent_precedence) noexcept;
-    std::unique_ptr<ast::expression> parse_binary_expression(
+    std::unique_ptr<ast::expression_syntax> parse_literal_expression() noexcept;
+    std::unique_ptr<ast::expression_syntax> parse_name_expression() noexcept;
+    std::unique_ptr<ast::expression_syntax> parse_parenthesized_expression() noexcept;
+    std::unique_ptr<ast::expression_syntax> parse_primary_expression() noexcept;
+    ast::separated_syntax_list<ast::expression_syntax> parse_argument_list() noexcept;
+    std::unique_ptr<ast::expression_syntax> parse_postfix_expression() noexcept;
+    std::unique_ptr<ast::expression_syntax> parse_unary_expression(std::size_t parent_precedence) noexcept;
+    std::unique_ptr<ast::expression_syntax> parse_binary_expression(
             std::size_t parent_precedence) noexcept;
-    std::unique_ptr<ast::expression> parse_conditional_expression() noexcept;
-    std::unique_ptr<ast::expression> parse_expression() noexcept;
+    std::unique_ptr<ast::expression_syntax> parse_conditional_expression() noexcept;
+    std::unique_ptr<ast::expression_syntax> parse_expression() noexcept;
     std::unique_ptr<ast::statement> parse_expression_statement() noexcept;
 
   public:

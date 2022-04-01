@@ -1,7 +1,7 @@
 #include "cparser/ast/expression_statement.hpp"
 
 cc::ast::expression_statement::expression_statement(
-        std::unique_ptr<ast::expression> expression, token&& semicolon_token) noexcept
+        std::unique_ptr<ast::expression_syntax> expression, token&& semicolon_token) noexcept
     : m_expression(std::move(expression)), m_semicolon_token(std::move(semicolon_token)) {}
 
 cc::syntax_kind cc::ast::expression_statement::kind() const noexcept {
@@ -12,7 +12,7 @@ std::vector<const cc::syntax_node*> cc::ast::expression_statement::children() co
     return {m_expression.get()};
 }
 
-const cc::ast::expression& cc::ast::expression_statement::expression() const noexcept {
+const cc::ast::expression_syntax& cc::ast::expression_statement::expression() const noexcept {
     return *m_expression;
 }
 

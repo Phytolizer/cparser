@@ -28,11 +28,11 @@ class token final : public syntax_node {
 
     syntax_kind kind() const noexcept override;
     std::vector<const syntax_node*> children() const noexcept override;
-
-    friend std::ostream& operator<<(std::ostream& os, const token& tok);
 };
 
 } // namespace cc
+
+std::ostream& operator<<(std::ostream& os, const cc::token& tok);
 
 template <> struct fmt::formatter<cc::token> {
     template <typename ParseContext> constexpr auto parse(ParseContext& ctx) {

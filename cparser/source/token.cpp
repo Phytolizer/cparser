@@ -18,6 +18,6 @@ std::vector<const cc::syntax_node*> cc::token::children() const noexcept {
     return {};
 }
 
-std::ostream& cc::operator<<(std::ostream& os, const token& tok) {
-    return os << magic_enum::enum_name(tok.m_kind) << " '" << tok.text << '\'';
+std::ostream& operator<<(std::ostream& os, const cc::token& tok) {
+    return os << magic_enum::enum_name(tok.kind()) << " '" << tok.text << '\'';
 }

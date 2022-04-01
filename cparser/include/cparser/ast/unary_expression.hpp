@@ -8,18 +8,18 @@
 
 namespace cc::ast {
 
-class unary_expression final : public expression {
+class unary_expression final : public expression_syntax {
     token m_operator_token;
-    std::unique_ptr<expression> m_expression;
+    std::unique_ptr<expression_syntax> m_expression;
 
   public:
-    unary_expression(token&& operator_token, std::unique_ptr<expression> expression) noexcept;
+    unary_expression(token&& operator_token, std::unique_ptr<expression_syntax> expression) noexcept;
 
     syntax_kind kind() const noexcept override;
     std::vector<const syntax_node*> children() const noexcept override;
 
     const token& operator_token() const noexcept;
-    const expression& expression() const noexcept;
+    const expression_syntax& expression() const noexcept;
 };
 
 } // namespace cc::ast

@@ -5,7 +5,7 @@
 #include "cparser/token.hpp"
 namespace cc::ast {
 
-class literal_expression final : public expression {
+class literal_expression final : public expression_syntax {
   public:
     token literal_token;
 

@@ -1,7 +1,7 @@
 #include "cparser/ast/parenthesized_expression.hpp"
 
 cc::ast::parenthesized_expression::parenthesized_expression(token&& open_parenthesis_token,
-        std::unique_ptr<ast::expression>&& expression, token&& close_parenthesis_token) noexcept
+        std::unique_ptr<ast::expression_syntax>&& expression, token&& close_parenthesis_token) noexcept
     : m_open_parenthesis_token(std::move(open_parenthesis_token)),
       m_expression(std::move(expression)),
       m_close_parenthesis_token(std::move(close_parenthesis_token)) {}
@@ -22,7 +22,7 @@ const cc::token& cc::ast::parenthesized_expression::open_parenthesis_token() con
     return m_open_parenthesis_token;
 }
 
-const cc::ast::expression& cc::ast::parenthesized_expression::expression() const noexcept {
+const cc::ast::expression_syntax& cc::ast::parenthesized_expression::expression() const noexcept {
     return *m_expression;
 }
 

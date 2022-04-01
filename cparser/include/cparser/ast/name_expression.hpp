@@ -4,7 +4,7 @@
 #include "cparser/token.hpp"
 namespace cc::ast {
 
-class name_expression final : public expression {
+class name_expression final : public expression_syntax {
     token m_identifier_token;
 
   public:

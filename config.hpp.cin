@@ -2,6 +2,6 @@
 
 namespace cc {
 
-constexpr bool maiden_mode = @MAIDEN_MODE@;
+constexpr bool maiden_mode = @maiden_mode@;
 
 } // namespace cc
