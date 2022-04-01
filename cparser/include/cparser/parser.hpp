@@ -7,6 +7,7 @@
 #include "cparser/lexer.hpp"
 #include "cparser/peek_buffer.hpp"
 #include "cparser/source_span.hpp"
+#include "cparser/source_text.hpp"
 #include "cparser/syntax_kind.hpp"
 #include "cparser/token.hpp"
 
@@ -65,11 +66,12 @@ class parser final {
     std::unique_ptr<ast::statement> parse_expression_statement() noexcept;
 
   public:
-    explicit parser(std::string&& source_text) noexcept;
+    explicit parser(source_text&& source) noexcept;
 
     std::unique_ptr<ast::statement> parse() noexcept;
 
     diagnostic_bag take_diagnostics() noexcept;
+    const cc::source_text& source() const noexcept;
 };
 
 } // namespace cc

@@ -220,8 +220,7 @@ std::unique_ptr<cc::ast::statement> cc::parser::parse_expression_statement() noe
             std::move(expression), std::move(semicolon_token));
 }
 
-cc::parser::parser(std::string&& source_text) noexcept
-    : m_lexer(std::move(source_text)), m_buffer(m_lexer) {}
+cc::parser::parser(source_text&& source) noexcept : m_lexer(std::move(source)), m_buffer(m_lexer) {}
 
 std::unique_ptr<cc::ast::statement> cc::parser::parse() noexcept {
     return parse_expression_statement();
@@ -232,4 +231,8 @@ cc::diagnostic_bag cc::parser::take_diagnostics() noexcept {
     bag.add_all(m_lexer.diagnostics());
     bag.add_all(m_diagnostics.diagnostics());
     return bag;
+}
+
+const cc::source_text& cc::parser::source() const noexcept {
+    return m_lexer.source();
 }

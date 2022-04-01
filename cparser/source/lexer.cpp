@@ -14,10 +14,10 @@
 
 using namespace std::string_view_literals;
 
-cc::lexer::lexer(std::string&& source_text) noexcept : m_source_text(std::move(source_text)) {}
+cc::lexer::lexer(source_text&& source) noexcept : m_source(std::move(source)) {}
 
 cc::lexer::iterator cc::lexer::begin() noexcept {
-    return iterator{m_source_text.begin(), m_source_text.end(), &m_diagnostics};
+    return iterator{m_source.begin(), m_source.end(), &m_diagnostics};
 }
 
 cc::lexer::iterator cc::lexer::end() const noexcept {
@@ -26,6 +26,10 @@ cc::lexer::iterator cc::lexer::end() const noexcept {
 
 std::span<const cc::diagnostic> cc::lexer::diagnostics() const noexcept {
     return m_diagnostics.diagnostics();
+}
+
+const cc::source_text& cc::lexer::source() const noexcept {
+    return m_source;
 }
 
 cc::token cc::lexer::iterator::scan() noexcept {

@@ -2,6 +2,7 @@
 
 #include "cparser/diagnostic_bag.hpp"
 #include "cparser/source_span.hpp"
+#include "cparser/source_text.hpp"
 #include "cparser/syntax_kind.hpp"
 #include "cparser/token.hpp"
 #include "cparser/trivia.hpp"
@@ -17,7 +18,7 @@
 namespace cc {
 
 class lexer final {
-    std::string m_source_text;
+    source_text m_source;
     diagnostic_bag m_diagnostics;
 
   public:
@@ -65,12 +66,13 @@ class lexer final {
         const token* operator->() const noexcept;
     };
 
-    explicit lexer(std::string&& source_text) noexcept;
+    explicit lexer(source_text&& source) noexcept;
 
     iterator begin() noexcept;
     iterator end() const noexcept;
 
     std::span<const diagnostic> diagnostics() const noexcept;
+    const source_text& source() const noexcept;
 };
 
 static_assert(std::ranges::range<lexer>);
