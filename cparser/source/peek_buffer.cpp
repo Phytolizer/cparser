@@ -12,6 +12,11 @@ const cc::token& cc::peek_buffer::peek(std::size_t offset) noexcept {
             m_buffer.emplace_back(
                     syntax_kind::eof_token, source_span::with_length(m_last.span.end, 0), "");
         } else {
+            if (m_iter->kind() == syntax_kind::whitespace_token ||
+                    m_iter->kind() == syntax_kind::comment_token) {
+                ++m_iter;
+                continue;
+            }
             m_buffer.emplace_back(*m_iter);
             ++m_iter;
         }
