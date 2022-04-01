@@ -59,6 +59,7 @@ class parser final {
             std::size_t parent_precedence) noexcept;
     std::unique_ptr<ast::expression_syntax> parse_conditional_expression() noexcept;
     std::unique_ptr<ast::expression_syntax> parse_assignment_expression() noexcept;
+    std::unique_ptr<ast::expression_syntax> parse_comma_expression() noexcept;
     std::unique_ptr<ast::expression_syntax> parse_expression() noexcept;
     std::unique_ptr<ast::statement> parse_expression_statement() noexcept;
 

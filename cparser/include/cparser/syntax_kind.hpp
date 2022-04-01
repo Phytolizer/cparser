@@ -144,6 +144,7 @@ enum class syntax_kind {
     binary_expression,
     conditional_expression,
     assignment_expression,
+    comma_expression,
 };
 
 } // namespace cc

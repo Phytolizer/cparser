@@ -3,6 +3,7 @@ cparser_ast_src = files(
     'assignment_expression.cpp',
     'binary_expression.cpp',
     'call_expression.cpp',
+    'comma_expression.cpp',
     'conditional_expression.cpp',
     'decrement_expression.cpp',
     'expression_statement.cpp',

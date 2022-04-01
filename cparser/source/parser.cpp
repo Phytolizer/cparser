@@ -5,6 +5,7 @@
 #include "cparser/ast/assignment_expression.hpp"
 #include "cparser/ast/binary_expression.hpp"
 #include "cparser/ast/call_expression.hpp"
+#include "cparser/ast/comma_expression.hpp"
 #include "cparser/ast/conditional_expression.hpp"
 #include "cparser/ast/decrement_expression.hpp"
 #include "cparser/ast/expression.hpp"
@@ -57,12 +58,12 @@ cc::parser::parse_argument_list() noexcept {
     auto arguments = std::vector<std::unique_ptr<syntax_node>>{};
 
     if (m_buffer.peek().kind() != syntax_kind::right_parenthesis_token) {
-        arguments.emplace_back(parse_expression());
+        arguments.emplace_back(parse_assignment_expression());
 
         while (m_buffer.peek().kind() == syntax_kind::comma_token) {
             arguments.emplace_back(
                     std::make_unique<token>(match_token({}, syntax_kind::comma_token)));
-            arguments.emplace_back(parse_expression());
+            arguments.emplace_back(parse_assignment_expression());
         }
     }
 
@@ -193,8 +194,21 @@ std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_assignment_express
     return left;
 }
 
+std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_comma_expression() noexcept {
+    auto left = parse_assignment_expression();
+
+    if (m_buffer.peek().kind() == syntax_kind::comma_token) {
+        auto comma_token = m_buffer.advance();
+        auto right = parse_expression();
+        left = std::make_unique<ast::comma_expression>(
+                std::move(left), std::move(comma_token), std::move(right));
+    }
+
+    return left;
+}
+
 std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_expression() noexcept {
-    return parse_assignment_expression();
+    return parse_comma_expression();
 }
 
 std::unique_ptr<cc::ast::statement> cc::parser::parse_expression_statement() noexcept {
