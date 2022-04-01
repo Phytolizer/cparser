@@ -143,6 +143,7 @@ enum class syntax_kind {
     unary_expression,
     binary_expression,
     conditional_expression,
+    assignment_expression,
 };
 
 } // namespace cc

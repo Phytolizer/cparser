@@ -5,7 +5,6 @@ cparser_src = files(
     'lexer.cpp',
     'parser.cpp',
     'peek_buffer.cpp',
-    'syntax_facts.cpp',
     'syntax_node.cpp',
     'token.cpp',
     'trivia.cpp',

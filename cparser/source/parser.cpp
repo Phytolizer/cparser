@@ -2,6 +2,7 @@
 
 #include "config.hpp"
 #include "cparser/ast/array_index_expression.hpp"
+#include "cparser/ast/assignment_expression.hpp"
 #include "cparser/ast/binary_expression.hpp"
 #include "cparser/ast/call_expression.hpp"
 #include "cparser/ast/conditional_expression.hpp"
@@ -51,7 +52,8 @@ std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_parenthesized_expr
             std::move(expression), std::move(close_parenthesis_token));
 }
 
-cc::ast::separated_syntax_list<cc::ast::expression_syntax> cc::parser::parse_argument_list() noexcept {
+cc::ast::separated_syntax_list<cc::ast::expression_syntax>
+cc::parser::parse_argument_list() noexcept {
     auto arguments = std::vector<std::unique_ptr<syntax_node>>{};
 
     if (m_buffer.peek().kind() != syntax_kind::right_parenthesis_token) {
@@ -173,8 +175,24 @@ std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_conditional_expres
             std::move(else_expression));
 }
 
+std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_assignment_expression() noexcept {
+    auto left = parse_unary_expression(0);
+
+    if (facts::is_assignment_operator(m_buffer.peek().kind())) {
+        auto operator_token = m_buffer.advance();
+        auto right = parse_assignment_expression();
+
+        left = std::make_unique<ast::assignment_expression>(
+                std::move(left), std::move(operator_token), std::move(right));
+    } else {
+        // TODO(kyle): continue parsing conditional_expression???
+    }
+
+    return left;
+}
+
 std::unique_ptr<cc::ast::expression_syntax> cc::parser::parse_expression() noexcept {
-    return parse_binary_expression(0);
+    return parse_assignment_expression();
 }
 
 std::unique_ptr<cc::ast::statement> cc::parser::parse_expression_statement() noexcept {

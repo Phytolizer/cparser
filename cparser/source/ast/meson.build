@@ -1,5 +1,6 @@
 cparser_ast_src = files(
     'array_index_expression.cpp',
+    'assignment_expression.cpp',
     'binary_expression.cpp',
     'call_expression.cpp',
     'conditional_expression.cpp',
