@@ -3,6 +3,7 @@ add_library(
     "source/ast/array_index_expression.cpp"
     "source/ast/binary_expression.cpp"
     "source/ast/call_expression.cpp"
+    "source/ast/conditional_expression.cpp"
     "source/ast/decrement_expression.cpp"
     "source/ast/expression_statement.cpp"
     "source/ast/increment_expression.cpp"

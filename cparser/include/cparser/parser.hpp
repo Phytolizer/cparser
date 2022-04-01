@@ -55,6 +55,7 @@ class parser final {
     std::unique_ptr<ast::expression> parse_unary_expression(std::size_t parent_precedence) noexcept;
     std::unique_ptr<ast::expression> parse_binary_expression(
             std::size_t parent_precedence) noexcept;
+    std::unique_ptr<ast::expression> parse_conditional_expression() noexcept;
     std::unique_ptr<ast::expression> parse_expression() noexcept;
     std::unique_ptr<ast::statement> parse_expression_statement() noexcept;
 

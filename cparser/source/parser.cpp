@@ -4,6 +4,7 @@
 #include "cparser/ast/array_index_expression.hpp"
 #include "cparser/ast/binary_expression.hpp"
 #include "cparser/ast/call_expression.hpp"
+#include "cparser/ast/conditional_expression.hpp"
 #include "cparser/ast/decrement_expression.hpp"
 #include "cparser/ast/expression.hpp"
 #include "cparser/ast/expression_statement.hpp"
@@ -155,6 +156,21 @@ std::unique_ptr<cc::ast::expression> cc::parser::parse_binary_expression(
     }
 
     return left;
+}
+
+std::unique_ptr<cc::ast::expression> cc::parser::parse_conditional_expression() noexcept {
+    auto condition = parse_binary_expression(0);
+    if (m_buffer.peek().kind() != syntax_kind::question_token) {
+        return condition;
+    }
+
+    auto question_token = m_buffer.advance();
+    auto then_expression = parse_expression();
+    auto colon_token = match_token({}, syntax_kind::colon_token);
+    auto else_expression = parse_conditional_expression();
+    return std::make_unique<ast::conditional_expression>(std::move(condition),
+            std::move(question_token), std::move(then_expression), std::move(colon_token),
+            std::move(else_expression));
 }
 
 std::unique_ptr<cc::ast::expression> cc::parser::parse_expression() noexcept {
