@@ -17,6 +17,8 @@
 #include "cparser/ast/parenthesized_expression.hpp"
 #include "cparser/ast/separated_syntax_list.hpp"
 #include "cparser/ast/unary_expression.hpp"
+#include "cparser/diagnostic.hpp"
+#include "cparser/diagnostic_bag.hpp"
 #include "cparser/syntax_facts.hpp"
 #include "cparser/syntax_kind.hpp"
 
@@ -225,7 +227,9 @@ std::unique_ptr<cc::ast::statement> cc::parser::parse() noexcept {
     return parse_expression_statement();
 }
 
-std::span<const cc::diagnostic> cc::parser::diagnostics() noexcept {
-    m_diagnostics.add_all(m_lexer.diagnostics());
-    return m_diagnostics.diagnostics();
+cc::diagnostic_bag cc::parser::take_diagnostics() noexcept {
+    diagnostic_bag bag;
+    bag.add_all(m_lexer.diagnostics());
+    bag.add_all(m_diagnostics.diagnostics());
+    return bag;
 }

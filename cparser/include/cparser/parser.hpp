@@ -54,7 +54,8 @@ class parser final {
     std::unique_ptr<ast::expression_syntax> parse_primary_expression() noexcept;
     ast::separated_syntax_list<ast::expression_syntax> parse_argument_list() noexcept;
     std::unique_ptr<ast::expression_syntax> parse_postfix_expression() noexcept;
-    std::unique_ptr<ast::expression_syntax> parse_unary_expression(std::size_t parent_precedence) noexcept;
+    std::unique_ptr<ast::expression_syntax> parse_unary_expression(
+            std::size_t parent_precedence) noexcept;
     std::unique_ptr<ast::expression_syntax> parse_binary_expression(
             std::size_t parent_precedence) noexcept;
     std::unique_ptr<ast::expression_syntax> parse_conditional_expression() noexcept;
@@ -68,7 +69,7 @@ class parser final {
 
     std::unique_ptr<ast::statement> parse() noexcept;
 
-    std::span<const diagnostic> diagnostics() noexcept;
+    diagnostic_bag take_diagnostics() noexcept;
 };
 
 } // namespace cc
