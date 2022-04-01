@@ -48,8 +48,11 @@ enum class syntax_kind {
     // Special tokens
     // ----
     identifier_token,
-    whitespace_token,
-    comment_token,
+
+    // Trivia
+    // ----
+    whitespace_trivia,
+    comment_trivia,
 
     // Constants
     // ----

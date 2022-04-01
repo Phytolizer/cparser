@@ -9,14 +9,10 @@ cc::peek_buffer::peek_buffer(std::string&& source_text) noexcept
 const cc::token& cc::peek_buffer::peek(std::size_t offset) noexcept {
     while (m_buffer.size() <= offset) {
         if (m_iter == m_lexer.end()) {
-            m_buffer.emplace_back(
-                    syntax_kind::eof_token, source_span::with_length(m_last.span.end, 0), "");
+            m_buffer.emplace_back(syntax_kind::eof_token,
+                    source_span::with_length(m_last.span.end, 0), "", std::vector<trivia>{},
+                    std::vector<trivia>{});
         } else {
-            if (m_iter->kind() == syntax_kind::whitespace_token ||
-                    m_iter->kind() == syntax_kind::comment_token) {
-                ++m_iter;
-                continue;
-            }
             m_buffer.emplace_back(*m_iter);
             ++m_iter;
         }

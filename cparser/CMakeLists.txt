@@ -20,6 +20,7 @@ add_library(
     "source/syntax_facts.cpp"
     "source/syntax_node.cpp"
     "source/token.cpp"
+    "source/trivia.cpp"
 )
 target_include_directories("cparser" PUBLIC "include")
 

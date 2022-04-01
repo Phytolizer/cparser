@@ -4,6 +4,7 @@
 #include "cparser/source_span.hpp"
 #include "cparser/syntax_kind.hpp"
 #include "cparser/token.hpp"
+#include "cparser/trivia.hpp"
 
 #include <cstddef>
 #include <iterator>
@@ -11,6 +12,7 @@
 #include <span>
 #include <string>
 #include <string_view>
+#include <vector>
 
 namespace cc {
 
@@ -24,17 +26,21 @@ class lexer final {
         std::string::const_iterator m_token_start;
         std::string::const_iterator m_current;
         std::string::const_iterator m_end;
+        syntax_kind m_kind;
         diagnostic_bag* m_diagnostics;
-        bool m_reported_diagnostic;
         bool m_is_end;
         token m_just_scanned;
+        std::vector<trivia> m_trivia_builder;
 
-        token scan_token() noexcept;
-        token scan_comment() noexcept;
-        token scan_identifier() noexcept;
-        token scan_number() noexcept;
-        token scan_character_literal() noexcept;
-        token scan_string_literal() noexcept;
+        token scan() noexcept;
+        void scan_trivia(bool leading) noexcept;
+        void scan_token() noexcept;
+        void scan_whitespace() noexcept;
+        void scan_comment() noexcept;
+        void scan_identifier() noexcept;
+        void scan_number() noexcept;
+        void scan_character_literal() noexcept;
+        void scan_string_literal() noexcept;
         void scan_escape_sequence() noexcept;
         syntax_kind recognize_keyword(std::string_view text) const noexcept;
         char look(std::ptrdiff_t offset = 1) const noexcept;

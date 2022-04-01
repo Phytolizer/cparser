@@ -39,6 +39,8 @@ class parser final {
                 syntax_kind::bad_token,
                 source_span::with_length(tok.span.begin, 0),
                 "",
+                {},
+                {},
         };
         m_buffer.advance();
         return manufactured_token;
@@ -51,7 +53,8 @@ class parser final {
     ast::separated_syntax_list<ast::expression> parse_argument_list() noexcept;
     std::unique_ptr<ast::expression> parse_postfix_expression() noexcept;
     std::unique_ptr<ast::expression> parse_unary_expression(std::size_t parent_precedence) noexcept;
-    std::unique_ptr<ast::expression> parse_binary_expression(std::size_t parent_precedence) noexcept;
+    std::unique_ptr<ast::expression> parse_binary_expression(
+            std::size_t parent_precedence) noexcept;
     std::unique_ptr<ast::expression> parse_expression() noexcept;
     std::unique_ptr<ast::statement> parse_expression_statement() noexcept;
 
