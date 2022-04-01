@@ -11,6 +11,9 @@ magic_enum_dep = magic_enum_proj.get_variable('magic_enum_dep')
 fmt_proj = subproject('fmt')
 fmt_dep = fmt_proj.get_variable('fmt_dep')
 
+rang_proj = subproject('rang')
+rang_dep = rang_proj.get_variable('rang_dep')
+
 conf_data = configuration_data()
 if get_option('maiden_mode')
     conf_data.set('maiden_mode', 'true')
